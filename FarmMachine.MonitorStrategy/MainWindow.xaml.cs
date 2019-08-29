@@ -15,14 +15,18 @@ using System.Windows.Shapes;
 
 namespace FarmMachine.MonitorStrategy
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
-	{
-		public MainWindow()
-		{
-			InitializeComponent();
-		}
-	}
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow : Window
+  {
+    public MainWindow()
+    {
+      CefSharp.CefSettings settings = new CefSharp.CefSettings();
+      settings.CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\CEF"; 
+      CefSharp.Cef.Initialize(settings);
+      
+      InitializeComponent();
+    }
+  }
 }

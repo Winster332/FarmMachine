@@ -2,8 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-        Title="MainWindow" Height="550" Width="625">
+        Title="FarmMachine.MonitorStrategy" Height="550" Width="625"
+        WindowState="Maximized">
 	<Grid>
-		<cefSharp:ChromiumWebBrowser Grid.Row="0" Address="https://github.com/cefsharp/CefSharp/wiki/Frequently-asked-questions" />
+		<cefSharp:ChromiumWebBrowser Grid.Row="0" Address="https://ru.tradingview.com/chart/m2GgaP0Q/#" />
 	</Grid>
 </Window>
