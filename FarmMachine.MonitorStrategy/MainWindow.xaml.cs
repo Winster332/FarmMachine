@@ -5,8 +5,8 @@ using System.Threading;
 using System.Windows;
 using CefSharp;
 using CsQuery;
+using FarmMachine.Domain.Models;
 using FarmMachine.MonitorStrategy.Core;
-using FarmMachine.MonitorStrategy.Core.Models;
 
 namespace FarmMachine.MonitorStrategy
 {

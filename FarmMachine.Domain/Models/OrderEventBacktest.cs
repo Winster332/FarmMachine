@@ -1,6 +1,6 @@
 using System;
 
-namespace FarmMachine.MonitorStrategy.Core.Models
+namespace FarmMachine.Domain.Models
 {
   public class OrderEventBacktest
   {

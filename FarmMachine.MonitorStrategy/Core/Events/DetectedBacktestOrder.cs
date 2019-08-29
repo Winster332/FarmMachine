@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using FarmMachine.MonitorStrategy.Core.Models;
+using FarmMachine.Domain.Models;
 
 namespace FarmMachine.MonitorStrategy.Core.Events
 {

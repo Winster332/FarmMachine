@@ -150,9 +150,6 @@
     </Compile>
     <Compile Include="Core\Events\DetectedBacktestOrder.cs" />
     <Compile Include="Core\LibraryLoader.cs" />
-    <Compile Include="Core\Models\BacktestOrderPair.cs" />
-    <Compile Include="Core\Models\OrderEventBacktest.cs" />
-    <Compile Include="Core\Models\OrderEventType.cs" />
     <Compile Include="Core\MTBus.cs" />
     <Compile Include="Core\OrderCacheValidator.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -192,6 +189,12 @@
     <Content Include="Libs\tv.lib.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FarmMachine.Domain\FarmMachine.Domain.csproj">
+      <Project>{6fc1651c-76e2-4094-b9ae-07a789d697d4}</Project>
+      <Name>FarmMachine.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\cef.redist.x86.3.2171.2069\build\cef.redist.x86.targets" Condition="Exists('..\packages\cef.redist.x86.3.2171.2069\build\cef.redist.x86.targets')" />
