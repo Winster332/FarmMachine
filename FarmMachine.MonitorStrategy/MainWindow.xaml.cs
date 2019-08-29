@@ -17,6 +17,7 @@ namespace FarmMachine.MonitorStrategy
   {
     private LibraryLoader _libLoader;
     private OrderCacheValidator _orderCache;
+    private MTBus _mtBus;
     
     public MainWindow()
     {
@@ -29,7 +30,8 @@ namespace FarmMachine.MonitorStrategy
       _libLoader = new LibraryLoader();
       _libLoader.Init();
       
-      _orderCache = new OrderCacheValidator();
+      _mtBus = new MTBus();
+      _orderCache = new OrderCacheValidator(_mtBus);
       
       Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
     }

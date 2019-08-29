@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FarmMachine.MonitorStrategy.Core.Events;
 using FarmMachine.MonitorStrategy.Core.Models;
 
 namespace FarmMachine.MonitorStrategy.Core
@@ -8,9 +9,11 @@ namespace FarmMachine.MonitorStrategy.Core
   public class OrderCacheValidator
   {
     private Dictionary<DateTime, OrderEventBacktest> _cache { get; set; }
+    private MTBus _mtBus;
 
-    public OrderCacheValidator()
+    public OrderCacheValidator(MTBus bus)
     {
+      _mtBus = bus;
       _cache = new Dictionary<DateTime, OrderEventBacktest>();
     }
 
@@ -32,8 +35,13 @@ namespace FarmMachine.MonitorStrategy.Core
       if (listNew.Count != 0)
       {
         var targetOrder = listNew.LastOrDefault();
-        
-        Console.WriteLine("123");
+
+        _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
+        {
+          Id = Guid.NewGuid(),
+          Created = DateTime.Now,
+          OrderEvent = targetOrder
+        });
       }
 
       Cleanup();
