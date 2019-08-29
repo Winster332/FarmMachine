@@ -148,7 +148,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Events\DetectedBacktestOrder.cs" />
     <Compile Include="Core\LibraryLoader.cs" />
     <Compile Include="Core\MTBus.cs" />
     <Compile Include="Core\OrderCacheValidator.cs" />

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FarmMachine.Domain.Events;
 using FarmMachine.Domain.Models;
-using FarmMachine.MonitorStrategy.Core.Events;
 
 namespace FarmMachine.MonitorStrategy.Core
 {

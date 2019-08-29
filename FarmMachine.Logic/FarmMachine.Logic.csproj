@@ -65,26 +65,48 @@
           <HintPath>..\packages\RabbitMQ.Client.5.1.0\lib\net451\RabbitMQ.Client.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+          <HintPath>..\packages\Serilog.2.8.0\lib\net45\Serilog.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Serilog.Sinks.Console, Version=3.1.2.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+          <HintPath>..\packages\Serilog.Sinks.Console.3.1.2-dev-00823\lib\net45\Serilog.Sinks.Console.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+          <HintPath>..\packages\Serilog.Sinks.File.4.1.0-dev-00850\lib\net45\Serilog.Sinks.File.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System" />
+        <Reference Include="System.Configuration.Install" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Management" />
+        <Reference Include="System.ServiceProcess" />
         <Reference Include="System.Transactions" />
         <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
           <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="System.Xml" />
+        <Reference Include="Topshelf, Version=4.2.1.218, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b">
+          <HintPath>..\packages\Topshelf.4.2.1.218-develop\lib\net452\Topshelf.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Topshelf.Serilog, Version=4.2.1.218, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b">
+          <HintPath>..\packages\Topshelf.Serilog.4.2.1.218-develop\lib\net452\Topshelf.Serilog.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="EventHandlers\DetectedBacktestOrderEventHandler.cs" />
+        <Compile Include="Extensions\AssemblyExtensions.cs" />
+        <Compile Include="FarmMachineLogicService.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="EventHandlers" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\FarmMachine.Domain\FarmMachine.Domain.csproj">

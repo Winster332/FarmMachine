@@ -17,14 +17,6 @@ namespace FarmMachine.MonitorStrategy.Core
 
         x.UseDelayedExchangeMessageScheduler();
 
-        x.ReceiveEndpoint(host, "farm_machine", cfg =>
-        {
-//            cfg.Consumer(typeof(MailingCommandHandler), f => new MailingCommandHandler(database));
-//            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
-
-          cfg.UseConcurrencyLimit(64);
-        });
-
         x.UseConcurrencyLimit(64);
       });
 

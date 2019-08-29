@@ -38,13 +38,11 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Events\DetectedBacktestOrder.cs" />
         <Compile Include="Models\BacktestOrderPair.cs" />
         <Compile Include="Models\OrderEventBacktest.cs" />
         <Compile Include="Models\OrderEventType.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Events" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

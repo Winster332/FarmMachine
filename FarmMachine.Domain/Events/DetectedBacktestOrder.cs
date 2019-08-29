@@ -1,7 +1,7 @@
 using System;
 using FarmMachine.Domain.Models;
 
-namespace FarmMachine.MonitorStrategy.Core.Events
+namespace FarmMachine.Domain.Events
 {
   public interface DetectedBacktestOrder
   {
