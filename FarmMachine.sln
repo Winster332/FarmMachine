@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Logic", "FarmMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Domain", "FarmMachine.Domain\FarmMachine.Domain.csproj", "{6FC1651C-76E2-4094-B9AE-07A789D697D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.ExchangeBroker", "FarmMachine.ExchangeBroker\FarmMachine.ExchangeBroker.csproj", "{C9BF1755-7848-417B-9B86-C77748A07E4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Release|x64.Build.0 = Release|Any CPU
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Release|x86.Build.0 = Release|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Debug|x64.Build.0 = Debug|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Debug|x86.Build.0 = Debug|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Release|x64.ActiveCfg = Release|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Release|x64.Build.0 = Release|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9BF1755-7848-417B-9B86-C77748A07E4C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
