@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CefSharp;
 using CsQuery;
 using FarmMachine.MonitorStrategy.Core;
+using FarmMachine.MonitorStrategy.Core.Models;
 
 namespace FarmMachine.MonitorStrategy
 {
@@ -25,6 +16,8 @@ namespace FarmMachine.MonitorStrategy
   public partial class MainWindow : Window
   {
     private LibraryLoader _libLoader;
+    private OrderCacheValidator _orderCache;
+    
     public MainWindow()
     {
       CefSharp.CefSettings settings = new CefSharp.CefSettings();
@@ -35,6 +28,8 @@ namespace FarmMachine.MonitorStrategy
       
       _libLoader = new LibraryLoader();
       _libLoader.Init();
+      
+      _orderCache = new OrderCacheValidator();
       
       Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
     }
@@ -59,15 +54,55 @@ namespace FarmMachine.MonitorStrategy
           
           Browser.ExecuteScriptAsync("backtestListOrderScrollToBottom();");
           
-          ExtractOrders();
+          Thread.Sleep(500);
+          
+          var orders = ExtractOrders();
+          _orderCache.Push(orders);
         });
       }
     }
 
-    private void ExtractOrders()
+    private List<BacktestOrderPair> ExtractOrders()
     {
       var htmlSource = Browser.GetSourceAsync().GetAwaiter().GetResult();
       var cq = CQ.Create(htmlSource);
+
+      var items = cq.Find(".backtesting-content-wrapper").Find("tbody").ToList();
+      var orderPairs = new List<BacktestOrderPair>();
+      
+      foreach (var tbody in items)
+      {
+        var orderPair = new BacktestOrderPair();
+        
+        var trs = tbody.Cq().Find("tr").ToList();
+        var firstTr = trs.FirstOrDefault()?.ChildElements.Skip(2).ToList();
+        var secondTr = trs.LastOrDefault()?.ChildElements.Skip(1).ToList();
+
+        var ftype = firstTr[0].TextContent;
+        var fdateTime = firstTr[1].TextContent;
+        var fprice = firstTr[2].TextContent;
+
+        orderPair.Left = OrderEventBacktest.Parse(ftype, fdateTime, fprice);
+        
+        if (!string.IsNullOrWhiteSpace(secondTr[1].TextContent))
+        {
+          var stype = secondTr[0].TextContent;
+          var sdateTime = secondTr[1].TextContent;
+          var sprice = secondTr[2].TextContent;
+          
+          orderPair.Right = OrderEventBacktest.Parse(stype, sdateTime, sprice);
+        }
+        else
+        {
+          orderPair.Right = null;
+        }
+        
+        orderPairs.Add(orderPair);
+      }
+      
+      orderPairs.RemoveAt(orderPairs.Count - 1);
+
+      return orderPairs;
     }
   }
 }
