@@ -16,4 +16,8 @@
       <PackageReference Include="Topshelf.Serilog" Version="4.2.1.218-develop" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FarmMachine.Domain\FarmMachine.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
