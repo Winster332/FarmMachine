@@ -5,6 +5,6 @@
         Title="FarmMachine.MonitorStrategy" Height="550" Width="625"
         WindowState="Maximized">
 	<Grid>
-		<cefSharp:ChromiumWebBrowser Grid.Row="0" Address="https://ru.tradingview.com/chart/m2GgaP0Q/#" />
+		<cefSharp:ChromiumWebBrowser x:Name="Browser" Grid.Row="0" Address="https://ru.tradingview.com/chart/m2GgaP0Q/#" />
 	</Grid>
 </Window>

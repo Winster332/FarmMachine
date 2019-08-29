@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CefSharp;
+using FarmMachine.MonitorStrategy.Core;
 
 namespace FarmMachine.MonitorStrategy
 {
@@ -20,6 +22,7 @@ namespace FarmMachine.MonitorStrategy
   /// </summary>
   public partial class MainWindow : Window
   {
+    private LibraryLoader _libLoader;
     public MainWindow()
     {
       CefSharp.CefSettings settings = new CefSharp.CefSettings();
@@ -27,6 +30,24 @@ namespace FarmMachine.MonitorStrategy
       CefSharp.Cef.Initialize(settings);
       
       InitializeComponent();
+      
+      _libLoader = new LibraryLoader();
+      _libLoader.Init();
+      
+      Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
+    }
+    
+    private void WebBrowserFrameLoadEnded(object sender, FrameLoadEndEventArgs e)
+    {
+      if (e.IsMainFrame)
+      {
+        Browser.GetSourceAsync().ContinueWith(taskHtml =>
+        {
+          _libLoader.Execute(Browser);
+          
+          var html = taskHtml.Result;
+        });
+      }
     }
   }
 }
