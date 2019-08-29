@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CefSharp;
+using CsQuery;
 using FarmMachine.MonitorStrategy.Core;
 
 namespace FarmMachine.MonitorStrategy
@@ -46,8 +48,26 @@ namespace FarmMachine.MonitorStrategy
           _libLoader.Execute(Browser);
           
           var html = taskHtml.Result;
+          
+          Browser.ExecuteScriptAsync("openLastBacktestOrderList();");
+          
+          Thread.Sleep(500);
+          
+          Browser.ExecuteScriptAsync("getButtonBacktestListOrders(2).click();");
+          
+          Thread.Sleep(500);
+          
+          Browser.ExecuteScriptAsync("backtestListOrderScrollToBottom();");
+          
+          ExtractOrders();
         });
       }
+    }
+
+    private void ExtractOrders()
+    {
+      var htmlSource = Browser.GetSourceAsync().GetAwaiter().GetResult();
+      var cq = CQ.Create(htmlSource);
     }
   }
 }

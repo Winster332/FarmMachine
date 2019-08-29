@@ -33,6 +33,6 @@ function openLastBacktestOrderList() {
         backtestBtn.click();
     }
 
-    getButtonBacktestListOrders(2).click();
-    backtestListOrderScrollToBottom();
+    // getButtonBacktestListOrders(2).click();
+    // backtestListOrderScrollToBottom();
 }
