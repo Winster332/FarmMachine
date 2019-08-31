@@ -1,10 +1,7 @@
 using System;
 using System.Reflection;
-using System.Threading.Tasks;
-using FarmMachine.Domain.Events;
-using FarmMachine.Domain.Models;
+using FarmMachine.Domain.Extensions;
 using FarmMachine.Logic.EventHandlers;
-using FarmMachine.Logic.Extensions;
 using GreenPipes;
 using MassTransit;
 using Serilog;

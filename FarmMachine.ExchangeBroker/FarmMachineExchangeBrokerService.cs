@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using Autofac;
-using Bittrex.Net;
-using Bittrex.Net.Objects;
-using CryptoExchange.Net.Authentication;
-using CryptoExchange.Net.Logging;
+using FarmMachine.Domain.Extensions;
 using FarmMachine.ExchangeBroker.CommandHandlers;
 using FarmMachine.ExchangeBroker.Exchanges;
-using FarmMachine.ExchangeBroker.Extensions;
-using FarmMachine.ExchangeBroker.Services;
 using GreenPipes;
 using MassTransit;
 using MongoDB.Driver;

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace FarmMachine.Logic.Extensions
+namespace FarmMachine.Domain.Extensions
 {
   public static class AssemblyExtensions
   {

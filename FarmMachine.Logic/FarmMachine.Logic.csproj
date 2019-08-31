@@ -100,7 +100,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="EventHandlers\DetectedBacktestOrderEventHandler.cs" />
-        <Compile Include="Extensions\AssemblyExtensions.cs" />
         <Compile Include="FarmMachineLogicService.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
