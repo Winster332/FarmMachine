@@ -73,7 +73,13 @@ namespace FarmMachine.MonitorStrategy
           Thread.Sleep(500);
           
           var orders = ExtractOrders();
-          _orderCache.Push(orders);
+          var validationResult = _orderCache.Push(orders);
+
+          if (validationResult.Status == ValidationStatus.Reload)
+          {
+            Thread.Sleep(1000);
+            Browser.Reload();
+          }
         });
       }
     }

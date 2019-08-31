@@ -45,6 +45,7 @@
         <Compile Include="Models\OrderEventBacktest.cs" />
         <Compile Include="Models\OrderEventType.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Services\ProtocolRepository.cs" />
         <Compile Include="Services\TimeSchedulerService.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

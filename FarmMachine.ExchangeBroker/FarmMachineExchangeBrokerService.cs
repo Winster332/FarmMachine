@@ -46,7 +46,7 @@ namespace FarmMachine.ExchangeBroker
 
       builder.RegisterInstance(database).As<IMongoDatabase>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
-      builder.RegisterType<BittrexExhange>().As<IBittrexExchange>().SingleInstance();
+      builder.RegisterType<BittrexExchange>().As<IBittrexExchange>().SingleInstance();
       
       
       

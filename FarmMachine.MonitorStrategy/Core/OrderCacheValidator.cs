@@ -6,6 +6,20 @@ using FarmMachine.Domain.Models;
 
 namespace FarmMachine.MonitorStrategy.Core
 {
+  public enum ValidationStatus
+  {
+    Pushed,
+    Reload,
+    NotFound
+  }
+
+  public class ValidationResult
+  {
+    public ValidationStatus Status { get; set; }
+    public int DetectedCount { get; set; }
+    public OrderEventBacktest Order { get; set; }
+  }
+
   public class OrderCacheValidator
   {
     private Dictionary<DateTime, OrderEventBacktest> _cache { get; set; }
@@ -17,8 +31,9 @@ namespace FarmMachine.MonitorStrategy.Core
       _cache = new Dictionary<DateTime, OrderEventBacktest>();
     }
 
-    public void Push(List<BacktestOrderPair> pairs)
+    public ValidationResult Push(List<BacktestOrderPair> pairs)
     {
+      var result = new ValidationResult();
       var orders = pairs.Select(x => x.Right).Where(x => x != null).ToList();
       var listNew = new List<OrderEventBacktest>();
 
@@ -32,19 +47,44 @@ namespace FarmMachine.MonitorStrategy.Core
         }
       }
 
+      result.DetectedCount = listNew.Count;
+      result.Order = null;
+
       if (listNew.Count != 0)
       {
         var targetOrder = listNew.LastOrDefault();
+        var nowHour = DateTime.Now.Hour;
+        
+        result.Order = targetOrder;
 
-        _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
+        if (targetOrder.DateTime.Hour == nowHour)
         {
-          Id = Guid.NewGuid(),
-          Created = DateTime.Now,
-          OrderEvent = targetOrder
-        }).GetAwaiter().GetResult();
+          _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
+          {
+            Id = Guid.NewGuid(),
+            Created = DateTime.Now,
+            OrderEvent = targetOrder
+          }).GetAwaiter().GetResult();
+          result.Status = ValidationStatus.Pushed;
+        }
+        else
+        {
+          result.Status = ValidationStatus.Reload;
+
+          foreach (var newOrder in listNew)
+          {
+            _cache.Remove(newOrder.DateTime);
+          }
+        }
+      }
+      else
+      {
+        result.Status = ValidationStatus.NotFound;
       }
 
       Cleanup();
+
+      return result;
     }
 
     private void Cleanup()

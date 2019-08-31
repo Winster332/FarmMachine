@@ -15,7 +15,7 @@ namespace FarmMachine.Tests
         Id = Guid.NewGuid(),
         Created = DateTime.Now,
         Amount = 18,
-        Bid = 18
+        Ask = 1
       }).GetAwaiter().GetResult();
       Assert.True(true);
     }
