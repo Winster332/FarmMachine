@@ -67,10 +67,10 @@ namespace FarmMachine.MonitorStrategy.Core
         {
           result.Status = ValidationStatus.Reload;
 
-          foreach (var newOrder in listNew)
-          {
-            _cache.Remove(newOrder.DateTime);
-          }
+//          foreach (var newOrder in listNew)
+//          {
+//            _cache.Remove(newOrder.DateTime);
+//          }
         }
       }
       else
