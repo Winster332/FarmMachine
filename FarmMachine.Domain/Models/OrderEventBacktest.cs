@@ -4,7 +4,7 @@ namespace FarmMachine.Domain.Models
 {
   public class OrderEventBacktest
   {
-    public OrderEventType EventType { get; set; }
+    public string EventType { get; set; }
     public DateTime DateTime { get; set; }
     public decimal Price { get; set; }
 

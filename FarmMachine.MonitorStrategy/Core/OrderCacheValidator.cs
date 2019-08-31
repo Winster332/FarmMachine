@@ -41,7 +41,7 @@ namespace FarmMachine.MonitorStrategy.Core
           Id = Guid.NewGuid(),
           Created = DateTime.Now,
           OrderEvent = targetOrder
-        });
+        }).GetAwaiter().GetResult();
       }
 
       Cleanup();

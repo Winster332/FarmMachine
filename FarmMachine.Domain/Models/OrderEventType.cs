@@ -1,9 +1,9 @@
 namespace FarmMachine.Domain.Models
 {
-  public enum OrderEventType
+  public static class OrderEventType
   {
-    Buy,
-    Sell,
-    Unknown
+    public static string Buy = "buy";
+    public static string Sell = "sell";
+    public static string Unknown = "unknown";
   }
 }
