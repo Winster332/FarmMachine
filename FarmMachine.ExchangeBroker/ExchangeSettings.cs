@@ -6,8 +6,7 @@ namespace FarmMachine.ExchangeBroker
 {
   public class ExchangeSettings
   {
-    public string BittrexKey { get; set; }
-    public string BittrexSecret { get; set; }
+    public BittrexSettings Bittrex { get; set; }
     public MongoDbSettings Db { get; set; }
     public RabbitMqSettings RabbitMQ { get; set; }
 
@@ -16,8 +15,12 @@ namespace FarmMachine.ExchangeBroker
       var fileSource = LoadFromFile();
       var json = JToken.Parse(fileSource);
 
-      BittrexKey = json["bittrex"]["key"].ToObject<string>();
-      BittrexSecret = json["bittrex"]["secret"].ToObject<string>();
+      Bittrex = new BittrexSettings
+      {
+        Key = json["bittrex"]["key"].ToObject<string>(),
+        Secret = json["bittrex"]["secret"].ToObject<string>(),
+        Market = json["bittrex"]["market"].ToObject<string>()
+      };
       Db = new MongoDbSettings
       {
         DbConnectoin = json["database"]["connectionString"].ToObject<string>(),
@@ -43,6 +46,13 @@ namespace FarmMachine.ExchangeBroker
       }
 
       return fileSource;
+    }
+
+    public class BittrexSettings
+    {
+      public string Key { get; set; }
+      public string Secret { get; set; }
+      public string Market { get; set; }
     }
 
     public class RabbitMqSettings

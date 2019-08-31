@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FarmMachine.Domain.Commands.Exchange;
+using FarmMachine.ExchangeBroker.Exchanges;
 using MassTransit;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -10,8 +11,11 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
   public class BuySellCommandHandler : IConsumer<BuyCurrency>, IConsumer<SellCurrency>
   {
     public IMongoCollection<BsonDocument> _protocol;
-    public BuySellCommandHandler(IMongoDatabase database)
+    private IBittrexExchange _exchange;
+    
+    public BuySellCommandHandler(IMongoDatabase database, IBittrexExchange exchange)
     {
+      _exchange = exchange;
       _protocol = database.GetCollection<BsonDocument>("protocol");
     }
     
@@ -25,6 +29,8 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         { "timestamp", context.Message.Created },
         { "type", "buy" }
       }));
+      
+      
     }
 
     public async Task Consume(ConsumeContext<SellCurrency> context)

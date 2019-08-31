@@ -41,12 +41,14 @@ namespace FarmMachine.ExchangeBroker
 
       var mongoClient = new MongoClient(_settings.Db.DbConnectoin);
       var database = mongoClient.GetDatabase(_settings.Db.DbName);
+      
+      var exchange = new BittrexExchange(_settings);
 
       var builder = new ContainerBuilder();
 
       builder.RegisterInstance(database).As<IMongoDatabase>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
-      builder.RegisterType<BittrexExchange>().As<IBittrexExchange>().SingleInstance();
+      builder.RegisterInstance(exchange).As<IBittrexExchange>().SingleInstance();
       
       
       
@@ -58,7 +60,7 @@ namespace FarmMachine.ExchangeBroker
 
         x.ReceiveEndpoint(host, "farm_machine", cfg =>
         {
-            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(database));
+            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(database, exchange));
 //            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
 
           cfg.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);

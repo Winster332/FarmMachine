@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using Bittrex.Net;
 using Bittrex.Net.Objects;
@@ -12,6 +14,9 @@ namespace FarmMachine.ExchangeBroker.Exchanges
   public interface IBittrexExchange : IDisposable
   {
     void Init();
+
+    Task<decimal> GetActualBuyPrice();
+    Task<decimal> GetActualSellPrice();
   }
 
   public class BittrexExchange : IBittrexExchange
@@ -19,16 +24,18 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     private ExchangeSettings _settings;
     private BittrexClient _httpClient;
     private BittrexSocketClient _socketClient;
+    private string _marketName;
     public BittrexExchange(ExchangeSettings settings)
     {
       _settings = settings;
+      _marketName = settings.Bittrex.Market;
     }
 
     public void Init()
     {
       BittrexClient.SetDefaultOptions(new BittrexClientOptions()
       {
-        ApiCredentials = new ApiCredentials(_settings.BittrexKey, _settings.BittrexSecret),
+        ApiCredentials = new ApiCredentials(_settings.Bittrex.Key, _settings.Bittrex.Secret),
         LogVerbosity = LogVerbosity.Info,
         LogWriters = new List<TextWriter>() { Console.Out }
       });
@@ -37,10 +44,20 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       _socketClient = new BittrexSocketClient();
     }
 
-    public async void GetOrderBook()
+    public async Task<decimal> GetActualBuyPrice()
     {
-      var orderBook = await _httpClient.GetOrderBookAsync("USD-BTC");
+      var orderBook = await _httpClient.GetOrderBookAsync(_marketName);
+      var lastOrder = orderBook.Data.Buy.LastOrDefault();
+      return lastOrder.Rate;
     }
+
+    public async Task<decimal> GetActualSellPrice()
+    {
+      var orderBook = await _httpClient.GetOrderBookAsync(_marketName);
+      var lastOrder = orderBook.Data.Sell.LastOrDefault();
+      return lastOrder.Rate;
+    }
+
 
     public void Dispose()
     {
