@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarmMachine.Domain.Events;
+using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
 
 namespace FarmMachine.MonitorStrategy.Core
@@ -59,12 +59,8 @@ namespace FarmMachine.MonitorStrategy.Core
 
         if (targetOrder.DateTime.Hour == nowHour)
         {
-          _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
-          {
-            Id = Guid.NewGuid(),
-            Created = DateTime.Now,
-            OrderEvent = targetOrder
-          }).GetAwaiter().GetResult();
+          PushNotification(targetOrder);
+          
           result.Status = ValidationStatus.Pushed;
         }
         else
@@ -85,6 +81,41 @@ namespace FarmMachine.MonitorStrategy.Core
       Cleanup();
 
       return result;
+    }
+
+    private void PushNotification(OrderEventBacktest order)
+    {
+      if (order.EventType == OrderEventType.Buy)
+      {
+        _mtBus.GetBus().Publish<BuyCurrency>(new
+        {
+          Id = Guid.NewGuid(),
+          Created = DateTime.Now,
+          Amount = 18,
+          Bid = order.Price
+        });
+      }
+      else if (order.EventType == OrderEventType.Sell)
+      {
+        _mtBus.GetBus().Publish<SellCurrency>(new
+        {
+          Id = Guid.NewGuid(),
+          Created = DateTime.Now,
+          Amount = 18,
+          Ask = order.Price
+        });
+      }
+      else if (order.EventType == OrderEventType.Unknown)
+      {
+        Console.WriteLine("123");
+      }
+
+//      _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
+//      {
+//        Id = Guid.NewGuid(),
+//        Created = DateTime.Now,
+//        OrderEvent = order,
+//      }).GetAwaiter().GetResult();
     }
 
     private void Cleanup()
