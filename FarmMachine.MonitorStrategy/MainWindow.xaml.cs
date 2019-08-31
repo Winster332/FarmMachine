@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -7,6 +8,7 @@ using CefSharp;
 using CsQuery;
 using FarmMachine.Domain.Models;
 using FarmMachine.MonitorStrategy.Core;
+using MassTransit;
 
 namespace FarmMachine.MonitorStrategy
 {
@@ -17,6 +19,7 @@ namespace FarmMachine.MonitorStrategy
   {
     private LibraryLoader _libLoader;
     private OrderCacheValidator _orderCache;
+    private TimeSchedulerService _timeScheduler;
     private MTBus _mtBus;
     
     public MainWindow()
@@ -34,8 +37,12 @@ namespace FarmMachine.MonitorStrategy
       _orderCache = new OrderCacheValidator(_mtBus);
       
       Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
+      this.Closing += OnClosing;
+      
+      _timeScheduler = new TimeSchedulerService(Browser, TimeInterval.M15);
+      _timeScheduler.Start();
     }
-    
+
     private void WebBrowserFrameLoadEnded(object sender, FrameLoadEndEventArgs e)
     {
       if (e.IsMainFrame)
@@ -105,6 +112,12 @@ namespace FarmMachine.MonitorStrategy
       orderPairs.RemoveAt(orderPairs.Count - 1);
 
       return orderPairs;
+    }
+    
+    private void OnClosing(object sender, CancelEventArgs e)
+    {
+      _timeScheduler.Stop();
+      _mtBus.GetBus().Stop();
     }
   }
 }

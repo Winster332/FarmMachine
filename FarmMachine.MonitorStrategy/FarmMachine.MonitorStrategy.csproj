@@ -151,6 +151,7 @@
     <Compile Include="Core\LibraryLoader.cs" />
     <Compile Include="Core\MTBus.cs" />
     <Compile Include="Core\OrderCacheValidator.cs" />
+    <Compile Include="Core\TimeSchedulerService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

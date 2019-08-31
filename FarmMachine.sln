@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.ExchangeBroker"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Launcher", "FarmMachine.Launcher\FarmMachine.Launcher.csproj", "{954439EB-1304-4501-AD21-194BFC0A13DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Tests", "FarmMachine.Tests\FarmMachine.Tests.csproj", "{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{954439EB-1304-4501-AD21-194BFC0A13DD}.Release|x64.Build.0 = Release|Any CPU
 		{954439EB-1304-4501-AD21-194BFC0A13DD}.Release|x86.ActiveCfg = Release|Any CPU
 		{954439EB-1304-4501-AD21-194BFC0A13DD}.Release|x86.Build.0 = Release|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x64.Build.0 = Release|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
