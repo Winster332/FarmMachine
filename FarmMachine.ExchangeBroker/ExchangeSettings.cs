@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
@@ -8,6 +9,7 @@ namespace FarmMachine.ExchangeBroker
     public string BittrexKey { get; set; }
     public string BittrexSecret { get; set; }
     public MongoDbSettings Db { get; set; }
+    public RabbitMqSettings RabbitMQ { get; set; }
 
     public void Load()
     {
@@ -20,6 +22,11 @@ namespace FarmMachine.ExchangeBroker
       {
         DbConnectoin = json["database"]["connectionString"].ToObject<string>(),
         DbName = json["database"]["dataBaseName"].ToObject<string>()
+      };
+      RabbitMQ = new RabbitMqSettings
+      {
+        Host = new Uri(json["rabbitMq"]["host"].ToObject<string>()),
+        ConcurrencyLimit = json["rabbitMq"]["concurrencyLimit"].ToObject<int>()
       };
     }
 
@@ -36,6 +43,12 @@ namespace FarmMachine.ExchangeBroker
       }
 
       return fileSource;
+    }
+
+    public class RabbitMqSettings
+    {
+      public Uri Host { get; set; }
+      public int ConcurrencyLimit { get; set; }
     }
 
     public class MongoDbSettings

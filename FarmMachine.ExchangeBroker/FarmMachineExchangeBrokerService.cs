@@ -7,6 +7,7 @@ using Bittrex.Net;
 using Bittrex.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Logging;
+using FarmMachine.ExchangeBroker.CommandHandlers;
 using FarmMachine.ExchangeBroker.Exchanges;
 using FarmMachine.ExchangeBroker.Extensions;
 using GreenPipes;
@@ -23,7 +24,6 @@ namespace FarmMachine.ExchangeBroker
     public static string Title => Assembly.GetEntryAssembly().GetTitle();
     public static string Description => Assembly.GetEntryAssembly().GetDescription();
     public static string Version => Assembly.GetEntryAssembly().GetVersion();
-    private IBusControl _busControl;
     private ExchangeSettings _settings;
     private IContainer _container;
     
@@ -46,28 +46,29 @@ namespace FarmMachine.ExchangeBroker
       builder.RegisterInstance(_settings).SingleInstance();
       builder.RegisterType<BittrexExhange>().As<IBittrexExchange>().SingleInstance();
       
-      _container = builder.Build();
       
-      _container.Resolve<IBittrexExchange>().Init();
       
-      _busControl = Bus.Factory.CreateUsingRabbitMq(x =>
+      builder.RegisterInstance(Bus.Factory.CreateUsingRabbitMq(x =>
       {
-        var host = x.Host(new Uri("rabbitmq://127.0.0.1/cartrek_dev"), h => { });
+        var host = x.Host(_settings.RabbitMQ.Host, h => { });
 
         x.UseDelayedExchangeMessageScheduler();
 
         x.ReceiveEndpoint(host, "farm_machine", cfg =>
         {
-//            cfg.Consumer(typeof(DetectedBacktestOrderEventHandler), f => new DetectedBacktestOrderEventHandler());
+            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(_container.Resolve<IMongoDatabase>()));
 //            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
 
-          cfg.UseConcurrencyLimit(64);
+          cfg.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
         });
 
-        x.UseConcurrencyLimit(64);
-      });
+        x.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
+      })).As<IBusControl>().SingleInstance();
 
-      _busControl.Start();
+      _container = builder.Build();
+      
+      _container.Resolve<IBittrexExchange>().Init();
+      _container.Resolve<IBusControl>().Start();
 
       Log.Information($"Service {Name} v.{Version} started");
       
@@ -76,7 +77,8 @@ namespace FarmMachine.ExchangeBroker
 
     public bool Stop(HostControl hostControl)
     {
-      _busControl?.Stop();
+      _container.Resolve<IBusControl>().Stop();
+      _container.Resolve<IBittrexExchange>().Dispose();
       
       return true;
     }

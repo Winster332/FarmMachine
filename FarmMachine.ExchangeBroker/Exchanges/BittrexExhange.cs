@@ -9,7 +9,7 @@ using CryptoExchange.Net.Logging;
 
 namespace FarmMachine.ExchangeBroker.Exchanges
 {
-  public interface IBittrexExchange
+  public interface IBittrexExchange : IDisposable
   {
     void Init();
   }
@@ -17,6 +17,8 @@ namespace FarmMachine.ExchangeBroker.Exchanges
   public class BittrexExhange : IBittrexExchange
   {
     private ExchangeSettings _settings;
+    private BittrexClient _httpClient;
+    private BittrexSocketClient _socketClient;
     public BittrexExhange(ExchangeSettings settings)
     {
       _settings = settings;
@@ -24,13 +26,23 @@ namespace FarmMachine.ExchangeBroker.Exchanges
 
     public void Init()
     {
-//      var settings = _container.Resolve<ExchangeSettings>();
       BittrexClient.SetDefaultOptions(new BittrexClientOptions()
       {
         ApiCredentials = new ApiCredentials(_settings.BittrexKey, _settings.BittrexSecret),
         LogVerbosity = LogVerbosity.Info,
         LogWriters = new List<TextWriter>() { Console.Out }
       });
+      
+      _httpClient = new BittrexClient();
+      _socketClient = new BittrexSocketClient();
+    }
+
+    public void Dispose()
+    {
+      _socketClient?.UnsubscribeAll();
+      
+      _httpClient?.Dispose();
+      _socketClient?.Dispose();
     }
   }
 }
