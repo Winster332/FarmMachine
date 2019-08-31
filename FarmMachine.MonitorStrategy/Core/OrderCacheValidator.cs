@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
+using Serilog;
 
 namespace FarmMachine.MonitorStrategy.Core
 {
@@ -18,6 +19,11 @@ namespace FarmMachine.MonitorStrategy.Core
     public ValidationStatus Status { get; set; }
     public int DetectedCount { get; set; }
     public OrderEventBacktest Order { get; set; }
+
+    public override string ToString()
+    {
+      return $"Status [{Status}] Detected count [{DetectedCount}] OrderEvent.Type [{Order.EventType}] OrderEvent.DateTime [{Order.DateTime}] OrderEvent.Price [{Order.Price}]";
+    }
   }
 
   public class OrderCacheValidator
@@ -33,6 +39,8 @@ namespace FarmMachine.MonitorStrategy.Core
 
     public ValidationResult Push(List<BacktestOrderPair> pairs)
     {
+      Log.Information("Push validation orders");
+      
       var result = new ValidationResult();
       var orders = pairs.Select(x => x.Right).Where(x => x != null).ToList();
       var listNew = new List<OrderEventBacktest>();
@@ -52,6 +60,8 @@ namespace FarmMachine.MonitorStrategy.Core
 
       if (listNew.Count != 0)
       {
+        Log.Information("Detected new order from backtest");
+        
         var targetOrder = listNew.LastOrDefault();
         var nowHour = DateTime.Now.Hour;
         
@@ -66,6 +76,8 @@ namespace FarmMachine.MonitorStrategy.Core
         else
         {
           result.Status = ValidationStatus.Reload;
+          
+          Log.Information($"Order not equals by time. Need hour: [{nowHour}], fact: [{targetOrder.DateTime.Hour}]");
 
           listNew.Remove(targetOrder);
           foreach (var newOrder in listNew)
@@ -76,6 +88,8 @@ namespace FarmMachine.MonitorStrategy.Core
       }
       else
       {
+        Log.Information("Not found order from backtest");
+        
         result.Status = ValidationStatus.NotFound;
       }
 
@@ -88,6 +102,8 @@ namespace FarmMachine.MonitorStrategy.Core
     {
       if (order.EventType == OrderEventType.Buy)
       {
+        Log.Information($"Buy order: {order}");
+          
         _mtBus.GetBus().Publish<BuyCurrency>(new
         {
           Id = Guid.NewGuid(),
@@ -98,6 +114,8 @@ namespace FarmMachine.MonitorStrategy.Core
       }
       else if (order.EventType == OrderEventType.Sell)
       {
+        Log.Information($"Sell order: {order}");
+        
         _mtBus.GetBus().Publish<SellCurrency>(new
         {
           Id = Guid.NewGuid(),
@@ -108,15 +126,8 @@ namespace FarmMachine.MonitorStrategy.Core
       }
       else if (order.EventType == OrderEventType.Unknown)
       {
-        Console.WriteLine("123");
+        Log.Information($"Unknown order: {order}");
       }
-
-//      _mtBus.GetBus().Publish<DetectedBacktestOrder>(new
-//      {
-//        Id = Guid.NewGuid(),
-//        Created = DateTime.Now,
-//        OrderEvent = order,
-//      }).GetAwaiter().GetResult();
     }
 
     private void Cleanup()

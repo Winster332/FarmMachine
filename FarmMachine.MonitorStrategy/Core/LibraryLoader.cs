@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using CefSharp.Wpf;
+using Serilog;
 
 namespace FarmMachine.MonitorStrategy.Core
 {
@@ -20,8 +21,12 @@ namespace FarmMachine.MonitorStrategy.Core
 
     public void Init()
     {
+      Log.Information("Loading js library: ");
+      
       foreach (var file in _files)
       {
+        Log.Information($"+ {file}");
+        
         var fileSource = ReadFromFile(file);
         
         _jsBuilder.AppendLine(fileSource);

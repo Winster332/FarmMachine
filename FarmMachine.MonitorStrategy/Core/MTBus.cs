@@ -2,6 +2,7 @@ using System;
 using CsQuery.EquationParser.Implementation;
 using GreenPipes;
 using MassTransit;
+using Serilog;
 
 namespace FarmMachine.MonitorStrategy.Core
 {
@@ -11,9 +12,13 @@ namespace FarmMachine.MonitorStrategy.Core
 
     public MTBus()
     {
+      var connectionString = "rabbitmq://127.0.0.1/cartrek_dev";
+      
+      Log.Information($"RabbitMQ connection: {connectionString}");
+      
       _busControl = Bus.Factory.CreateUsingRabbitMq(x =>
       {
-        var host = x.Host(new Uri("rabbitmq://127.0.0.1/cartrek_dev"), h => { });
+        var host = x.Host(new Uri(connectionString), h => { });
 
         x.UseDelayedExchangeMessageScheduler();
 
@@ -21,6 +26,8 @@ namespace FarmMachine.MonitorStrategy.Core
       });
 
       _busControl.Start();
+      
+      Log.Information($"RabbitMQ started");
     }
 
     public IBusControl GetBus()

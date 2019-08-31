@@ -10,6 +10,7 @@ using FarmMachine.Domain.Models;
 using FarmMachine.Domain.Services;
 using FarmMachine.MonitorStrategy.Core;
 using MassTransit;
+using Serilog;
 
 namespace FarmMachine.MonitorStrategy
 {
@@ -25,6 +26,12 @@ namespace FarmMachine.MonitorStrategy
     
     public MainWindow()
     {
+      Log.Logger = new LoggerConfiguration()
+        .WriteTo.File("FarmMachine.MonitorStrategy.log")
+        .CreateLogger();
+      
+      Log.Information("Service starting...");
+      
       CefSharp.CefSettings settings = new CefSharp.CefSettings();
       settings.CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\CEF"; 
       CefSharp.Cef.Initialize(settings);
@@ -43,11 +50,15 @@ namespace FarmMachine.MonitorStrategy
       _timeScheduler = new TimeSchedulerService(TimeSpan.FromMinutes(15));
       _timeScheduler.Work += TimeSchedulerOnWork;
       _timeScheduler.Start();
+      
+      Log.Information("Service started");
     }
 
     private void TimeSchedulerOnWork(object sender, EventArgs e)
     {
+      Log.Warning("Browser start reloading from TimeScheduler...");
       Browser.Reload();
+      Log.Warning("Browser stop reloaded from TimeScheduler");
     }
 
     private void WebBrowserFrameLoadEnded(object sender, FrameLoadEndEventArgs e)
@@ -72,12 +83,20 @@ namespace FarmMachine.MonitorStrategy
           
           Thread.Sleep(500);
           
+          Log.Information("Begin extract orders from backtest");
           var orders = ExtractOrders();
+          Log.Information($"Orders extracted from backtest: {orders.Count}");
+          
+          Log.Information("Begin order validation");
           var validationResult = _orderCache.Push(orders);
+          Log.Information($"End order validation: {validationResult}");
 
           if (validationResult.Status == ValidationStatus.Reload)
           {
             Thread.Sleep(1000);
+            
+            Log.Warning("Begin reload browser after failed validation");
+            
             Browser.Reload();
           }
         });
