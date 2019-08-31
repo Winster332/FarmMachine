@@ -1,10 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using Autofac;
+using Bittrex.Net;
+using Bittrex.Net.Objects;
+using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Logging;
+using FarmMachine.ExchangeBroker.Exchanges;
 using FarmMachine.ExchangeBroker.Extensions;
 using GreenPipes;
 using MassTransit;
-using Serilog;
+using MongoDB.Driver;
 using Topshelf;
+using Log = Serilog.Log;
 
 namespace FarmMachine.ExchangeBroker
 {
@@ -15,6 +24,8 @@ namespace FarmMachine.ExchangeBroker
     public static string Description => Assembly.GetEntryAssembly().GetDescription();
     public static string Version => Assembly.GetEntryAssembly().GetVersion();
     private IBusControl _busControl;
+    private ExchangeSettings _settings;
+    private IContainer _container;
     
     public bool Start(HostControl hostControl)
     {
@@ -24,6 +35,20 @@ namespace FarmMachine.ExchangeBroker
       Log.Information($"Title: {Title}");
       Log.Information($"Description: {Description}");
       Log.Information($"Version: {Version}");
+      
+      _settings = new ExchangeSettings();
+      _settings.Load();
+
+      var builder = new ContainerBuilder();
+
+      var mongoClient = new MongoClient(_settings.Db.DbConnectoin);
+      builder.RegisterInstance(mongoClient.GetDatabase(_settings.Db.DbConnectoin)).As<IMongoDatabase>().SingleInstance();
+      builder.RegisterInstance(_settings).SingleInstance();
+      builder.RegisterType<BittrexExhange>().As<IBittrexExchange>().SingleInstance();
+      
+      _container = builder.Build();
+      
+      _container.Resolve<IBittrexExchange>().Init();
       
       _busControl = Bus.Factory.CreateUsingRabbitMq(x =>
       {

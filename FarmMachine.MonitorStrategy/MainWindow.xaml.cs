@@ -123,8 +123,8 @@ namespace FarmMachine.MonitorStrategy
     
     private void OnClosing(object sender, CancelEventArgs e)
     {
-      _timeScheduler.Stop();
       _mtBus.GetBus().Stop();
+      _timeScheduler.Stop();
     }
   }
 }
