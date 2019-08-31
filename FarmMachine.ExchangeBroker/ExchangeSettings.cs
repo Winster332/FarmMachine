@@ -19,7 +19,17 @@ namespace FarmMachine.ExchangeBroker
       {
         Key = json["bittrex"]["key"].ToObject<string>(),
         Secret = json["bittrex"]["secret"].ToObject<string>(),
-        Market = json["bittrex"]["market"].ToObject<string>()
+        Market = json["bittrex"]["market"].ToObject<string>(),
+        
+        RiskManager = new BittrexRiskManagerSettings
+        {
+          BaseCurrency = json["bittrex"]["riskManager"]["baseCurrency"].ToObject<string>(),
+          Type = json["bittrex"]["riskManager"]["type"].ToObject<string>() == "percent" ? 
+            RiskManagerBalanceType.Percent : RiskManagerBalanceType.Fixed,
+          Percent = json["bittrex"]["riskManager"]["percent"].ToObject<int>(),
+          Amount = json["bittrex"]["riskManager"]["amount"].ToObject<decimal>(),
+          BalanceMinLimit = json["bittrex"]["riskManager"]["balanceMinLimit"].ToObject<decimal>()
+        }
       };
       Db = new MongoDbSettings
       {
@@ -48,11 +58,28 @@ namespace FarmMachine.ExchangeBroker
       return fileSource;
     }
 
+    public enum RiskManagerBalanceType
+    {
+      Fixed,
+      Percent
+    }
+
+    public class BittrexRiskManagerSettings
+    {
+      public string BaseCurrency { get; set; }
+      public RiskManagerBalanceType Type { get; set; }
+      public decimal Amount { get; set; }
+      public int Percent { get; set; }
+      public decimal BalanceMinLimit { get; set; }
+    }
+
     public class BittrexSettings
     {
       public string Key { get; set; }
       public string Secret { get; set; }
       public string Market { get; set; }
+      
+      public BittrexRiskManagerSettings RiskManager { get; set; }
     }
 
     public class RabbitMqSettings

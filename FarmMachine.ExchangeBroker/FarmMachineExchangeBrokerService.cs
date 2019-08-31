@@ -10,6 +10,7 @@ using CryptoExchange.Net.Logging;
 using FarmMachine.ExchangeBroker.CommandHandlers;
 using FarmMachine.ExchangeBroker.Exchanges;
 using FarmMachine.ExchangeBroker.Extensions;
+using FarmMachine.ExchangeBroker.Services;
 using GreenPipes;
 using MassTransit;
 using MongoDB.Driver;
@@ -43,14 +44,12 @@ namespace FarmMachine.ExchangeBroker
       var database = mongoClient.GetDatabase(_settings.Db.DbName);
       
       var exchange = new BittrexExchange(_settings);
-
+      
       var builder = new ContainerBuilder();
 
       builder.RegisterInstance(database).As<IMongoDatabase>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
       builder.RegisterInstance(exchange).As<IBittrexExchange>().SingleInstance();
-      
-      
       
       builder.RegisterInstance(Bus.Factory.CreateUsingRabbitMq(x =>
       {

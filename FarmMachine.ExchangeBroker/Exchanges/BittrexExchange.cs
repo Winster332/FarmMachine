@@ -8,6 +8,7 @@ using Bittrex.Net;
 using Bittrex.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Logging;
+using FarmMachine.ExchangeBroker.Services;
 
 namespace FarmMachine.ExchangeBroker.Exchanges
 {
@@ -15,6 +16,7 @@ namespace FarmMachine.ExchangeBroker.Exchanges
   {
     void Init();
 
+    IRiskManagerService RiskManager { get; set; }
     Task<decimal> GetActualBuyPrice();
     Task<decimal> GetActualSellPrice();
   }
@@ -25,10 +27,13 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     private BittrexClient _httpClient;
     private BittrexSocketClient _socketClient;
     private string _marketName;
+    public IRiskManagerService RiskManager { get; set; }
+    
     public BittrexExchange(ExchangeSettings settings)
     {
       _settings = settings;
       _marketName = settings.Bittrex.Market;
+      RiskManager = new RiskManagerService(this, settings.Bittrex.Market);
     }
 
     public void Init()
@@ -44,6 +49,13 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       _socketClient = new BittrexSocketClient();
     }
 
+    public async void GetBalance(string currency)
+    {
+      var balance = await _httpClient.GetBalanceAsync(currency);
+//      balance.Data.
+      
+    }
+
     public async Task<decimal> GetActualBuyPrice()
     {
       var orderBook = await _httpClient.GetOrderBookAsync(_marketName);
@@ -57,7 +69,6 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       var lastOrder = orderBook.Data.Sell.LastOrDefault();
       return lastOrder.Rate;
     }
-
 
     public void Dispose()
     {
