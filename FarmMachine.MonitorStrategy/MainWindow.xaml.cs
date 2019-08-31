@@ -7,6 +7,7 @@ using System.Windows;
 using CefSharp;
 using CsQuery;
 using FarmMachine.Domain.Models;
+using FarmMachine.Domain.Services;
 using FarmMachine.MonitorStrategy.Core;
 using MassTransit;
 
@@ -39,8 +40,14 @@ namespace FarmMachine.MonitorStrategy
       Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
       this.Closing += OnClosing;
       
-      _timeScheduler = new TimeSchedulerService(Browser, TimeInterval.M15);
+      _timeScheduler = new TimeSchedulerService(TimeSpan.FromMinutes(15));
+      _timeScheduler.Work += TimeSchedulerOnWork;
       _timeScheduler.Start();
+    }
+
+    private void TimeSchedulerOnWork(object sender, EventArgs e)
+    {
+      Browser.Reload();
     }
 
     private void WebBrowserFrameLoadEnded(object sender, FrameLoadEndEventArgs e)
