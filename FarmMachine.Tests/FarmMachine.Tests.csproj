@@ -91,8 +91,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="FarmMachineTest.cs" />
-        <Compile Include="Tests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Tests\BuyAndSellCurrencyTest.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\FarmMachine.Domain\FarmMachine.Domain.csproj">

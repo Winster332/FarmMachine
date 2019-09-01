@@ -142,10 +142,9 @@ namespace FarmMachine.ExchangeBroker.Exchanges
 
     public async Task<Guid> PlaceOrderOnSell(decimal amount, decimal rate)
     {
-//      var result = await _httpClient.PlaceOrderAsync(OrderSide.Sell, _marketName, amount, rate);
-
-//      return result.Data.Uuid;
-      var id = Guid.NewGuid();
+      var result = await _httpClient.PlaceOrderAsync(OrderSide.Sell, _marketName, amount, rate);
+      var id = result.Data.Uuid;
+      
       PlaceOrderController.AddOrder(new MetaOrder
       {
         OrderId = id,
@@ -154,12 +153,15 @@ namespace FarmMachine.ExchangeBroker.Exchanges
         Created = DateTime.Now,
         OrderType = OrderEventType.Sell
       });
+      
       return id;
     }
 
     public async Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate)
     {
-      var id = Guid.NewGuid();
+      var result = await _httpClient.PlaceOrderAsync(OrderSide.Buy, _marketName, amount, rate);
+      var id = result.Data.Uuid;
+      
       PlaceOrderController.AddOrder(new MetaOrder
       {
         OrderId = id,
@@ -168,9 +170,7 @@ namespace FarmMachine.ExchangeBroker.Exchanges
         Created = DateTime.Now,
         OrderType = OrderEventType.Buy
       });
-//      var result = await _httpClient.PlaceOrderAsync(OrderSide.Buy, _marketName, amount, rate);
 
-//      return result.Data.Uuid;
       return id;
     }
 

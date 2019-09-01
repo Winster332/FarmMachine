@@ -7,6 +7,7 @@ using FarmMachine.ExchangeBroker.Exchanges;
 using MassTransit;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Serilog;
 
 namespace FarmMachine.ExchangeBroker.CommandHandlers
 {
@@ -23,9 +24,19 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
     
     public async Task Consume(ConsumeContext<BuyCurrency> context)
     {
-      var amount = await _exchange.RiskManager.GetActualBuyAmount();
+      // Указываем количество сколько нужно закупиться BTC
+      var amount = 0.001m;//await _exchange.RiskManager.GetActualBuyAmount();
       var rate = await _exchange.GetActualBuyPrice();
       
+      Log.Information($"GET[BUY] => USD amount [{amount}] by [{rate}]");
+
+      if (amount <= 15)
+      {
+        Log.Warning($"Balance equal {amount}. Risk manager stopping FarmMachine.ExchangeBroker");
+        
+//        Environment.Exit(0);
+      }
+
       await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
       {
         { "_id", context.Message.Id },
@@ -35,18 +46,14 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         { "type", "buy" }
       }));
 
-      var orderId = await _exchange.PlaceOrderOnBuy(amount, rate);
-      var orderInfo = new MetaOrder
-      {
-        OrderId = orderId,
-        Created = DateTime.Now
-      };
-      
+//      await _exchange.PlaceOrderOnBuy(amount, rate);
     }
 
     public async Task Consume(ConsumeContext<SellCurrency> context)
     {
-      var amount = await _exchange.RiskManager.GetActualSellAmount();
+      // Количество сколько нужно продать BTC
+      // Обернуть инсерты в базу в блоки ексепшена
+      var amount = 0.00050000m;//await _exchange.RiskManager.GetActualSellAmount();
       var rate = await _exchange.GetActualSellPrice();
       
       await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
@@ -58,7 +65,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         { "type", "sell" }
       }));
       
-      var orderId = await _exchange.PlaceOrderOnSell(amount, rate);
+      await _exchange.PlaceOrderOnSell(amount, rate);
     }
   }
 }
