@@ -9,6 +9,7 @@ using Bittrex.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Logging;
 using CryptoExchange.Net.OrderBook;
+using FarmMachine.Domain.Models;
 using FarmMachine.ExchangeBroker.Services;
 
 namespace FarmMachine.ExchangeBroker.Exchanges
@@ -23,6 +24,8 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     Task<decimal> GetBalance(string currency);
     Task<Guid> PlaceOrderOnSell(decimal amount, decimal rate);
     Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate);
+    Task CancelOrder(Guid orderId);
+    PlaceOrderWorker GetPlaceWorker();
   }
 
   public class BittrexExchange : IBittrexExchange
@@ -31,13 +34,19 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     private BittrexClient _httpClient;
     private BittrexSocketClient _socketClient;
     private string _marketName;
+    private PlaceOrderWorker _placeOrderWorker;
     public IRiskManagerService RiskManager { get; set; }
+    public IPlaceOrderControlService PlaceOrderController { get; set; }
     
     public BittrexExchange(ExchangeSettings settings)
     {
       _settings = settings;
       _marketName = settings.Bittrex.Market;
       RiskManager = new RiskManagerService(this, settings.Bittrex.Market);
+      PlaceOrderController = new PlaceOrderControlService(this);
+      _placeOrderWorker = new PlaceOrderWorker(PlaceOrderController);
+//      _placeOrderWorker.RefreshOnBuy += PlaceOrderWorkerOnRefreshOnBuy;
+//      _placeOrderWorker.RefreshOnSell += PlaceOrderWorkerOnRefreshOnSell;
     }
 
     public void Init()
@@ -51,6 +60,8 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       
       _httpClient = new BittrexClient();
       _socketClient = new BittrexSocketClient();
+      
+      _placeOrderWorker.Start();
     }
 
     public async Task<decimal> GetBalance(string currency)
@@ -117,20 +128,48 @@ namespace FarmMachine.ExchangeBroker.Exchanges
 //      var result = await _httpClient.PlaceOrderAsync(OrderSide.Sell, _marketName, amount, rate);
 
 //      return result.Data.Uuid;
-      return Guid.NewGuid();
+      var id = Guid.NewGuid();
+      PlaceOrderController.AddOrder(new MetaOrder
+      {
+        OrderId = id,
+        Amount = amount,
+        Rate = rate,
+        Created = DateTime.Now,
+        OrderType = OrderEventType.Sell
+      });
+      return id;
     }
 
     public async Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate)
     {
+      var id = Guid.NewGuid();
+      PlaceOrderController.AddOrder(new MetaOrder
+      {
+        OrderId = id,
+        Amount = amount,
+        Rate = rate,
+        Created = DateTime.Now,
+        OrderType = OrderEventType.Buy
+      });
 //      var result = await _httpClient.PlaceOrderAsync(OrderSide.Buy, _marketName, amount, rate);
 
 //      return result.Data.Uuid;
-      return Guid.NewGuid();
+      return id;
     }
 
+    public async Task CancelOrder(Guid orderId)
+    {
+      var response = await _httpClient.CancelOrderAsync(orderId);
+    }
+
+    public PlaceOrderWorker GetPlaceWorker()
+    {
+      return _placeOrderWorker;
+    }
 
     public void Dispose()
     {
+      _placeOrderWorker.Stop();
       _socketClient?.UnsubscribeAll();
       
       _httpClient?.Dispose();

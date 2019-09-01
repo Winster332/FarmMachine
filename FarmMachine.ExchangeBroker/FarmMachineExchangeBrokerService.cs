@@ -1,8 +1,12 @@
+using System;
 using System.Reflection;
 using Autofac;
+using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Extensions;
+using FarmMachine.Domain.Models;
 using FarmMachine.ExchangeBroker.CommandHandlers;
 using FarmMachine.ExchangeBroker.Exchanges;
+using FarmMachine.ExchangeBroker.Services;
 using GreenPipes;
 using MassTransit;
 using MongoDB.Driver;
@@ -22,6 +26,7 @@ namespace FarmMachine.ExchangeBroker
     
     public bool Start(HostControl hostControl)
     {
+      #region print info
       Log.Information($"Service {Name} v.{Version} starting...");
 
       Log.Information($"Name: {Name}");
@@ -57,6 +62,7 @@ namespace FarmMachine.ExchangeBroker
       Log.Information($"RabbitMQ host: {_settings.RabbitMQ.Host}");
       Log.Information($"RabbitMQ concurrency limit: {_settings.RabbitMQ.ConcurrencyLimit}");
       Log.Information($"");
+      #endregion
       
       var mongoClient = new MongoClient(_settings.Db.DbConnectoin);
       var database = mongoClient.GetDatabase(_settings.Db.DbName);
@@ -87,13 +93,51 @@ namespace FarmMachine.ExchangeBroker
       })).As<IBusControl>().SingleInstance();
 
       _container = builder.Build();
+
+      var ex = _container.Resolve<IBittrexExchange>();
+      ex.Init();
+      ex.GetPlaceWorker().RefreshOnBuy += OnRefreshOnBuy;
+      ex.GetPlaceWorker().RefreshOnSell += OnRefreshOnSell;
       
-      _container.Resolve<IBittrexExchange>().Init();
       _container.Resolve<IBusControl>().Start();
 
       Log.Information($"Service {Name} v.{Version} started");
       
       return true;
+    }
+
+    private void OnRefreshOnSell(object sender, MetaOrder e)
+    {
+      Log.Warning($"Begin cancel order: {e}");
+      
+      _container.Resolve<IBittrexExchange>().CancelOrder(e.OrderId).GetAwaiter().GetResult();
+      
+      Log.Warning($"Canceled. Push on sell");
+      
+      _container.Resolve<IBusControl>().Publish<SellCurrency>(new
+      {
+        Id = Guid.NewGuid(),
+        Created = DateTime.Now,
+        Amount = e.Amount,
+        Ask = e.Rate
+      }).GetAwaiter().GetResult();
+    }
+
+    private void OnRefreshOnBuy(object sender, MetaOrder e)
+    {
+      Log.Warning($"Begin cancel order: {e}");
+      
+      _container.Resolve<IBittrexExchange>().CancelOrder(e.OrderId).GetAwaiter().GetResult();
+      
+      Log.Warning($"Canceled. Push on sell");
+      
+      _container.Resolve<IBusControl>().Publish<BuyCurrency>(new
+      {
+        Id = Guid.NewGuid(),
+        Created = DateTime.Now,
+        Amount = e.Amount,
+        Bid = e.Rate
+      }).GetAwaiter().GetResult();
     }
 
     public bool Stop(HostControl hostControl)

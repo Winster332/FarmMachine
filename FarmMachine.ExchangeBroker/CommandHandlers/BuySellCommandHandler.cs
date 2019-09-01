@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FarmMachine.Domain.Commands.Exchange;
+using FarmMachine.Domain.Models;
 using FarmMachine.ExchangeBroker.Exchanges;
 using MassTransit;
 using MongoDB.Bson;
@@ -34,6 +36,12 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       }));
 
       var orderId = await _exchange.PlaceOrderOnBuy(amount, rate);
+      var orderInfo = new MetaOrder
+      {
+        OrderId = orderId,
+        Created = DateTime.Now
+      };
+      
     }
 
     public async Task Consume(ConsumeContext<SellCurrency> context)
