@@ -10,6 +10,19 @@ namespace FarmMachine.Tests
     [Fact]
     public void Test1()
     {
+      BusControl.Publish<BuyCurrency>(new
+      {
+        Id = Guid.NewGuid(),
+        Created = DateTime.Now,
+        Amount = 18,
+        Bid = 1
+      }).GetAwaiter().GetResult();
+      Assert.True(true);
+    }
+    
+    [Fact]
+    public void Test2()
+    {
       BusControl.Publish<SellCurrency>(new
       {
         Id = Guid.NewGuid(),

@@ -8,6 +8,7 @@ using Bittrex.Net;
 using Bittrex.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Logging;
+using CryptoExchange.Net.OrderBook;
 using FarmMachine.ExchangeBroker.Services;
 
 namespace FarmMachine.ExchangeBroker.Exchanges
@@ -19,6 +20,9 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     IRiskManagerService RiskManager { get; set; }
     Task<decimal> GetActualBuyPrice();
     Task<decimal> GetActualSellPrice();
+    Task<decimal> GetBalance(string currency);
+    Task<Guid> PlaceOrderOnSell(decimal amount, decimal rate);
+    Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate);
   }
 
   public class BittrexExchange : IBittrexExchange
@@ -49,26 +53,81 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       _socketClient = new BittrexSocketClient();
     }
 
-    public async void GetBalance(string currency)
+    public async Task<decimal> GetBalance(string currency)
     {
       var balance = await _httpClient.GetBalanceAsync(currency);
-//      balance.Data.
-      
+      return balance.Data.Available.Value;
     }
 
     public async Task<decimal> GetActualBuyPrice()
     {
       var orderBook = await _httpClient.GetOrderBookAsync(_marketName);
-      var lastOrder = orderBook.Data.Buy.LastOrDefault();
-      return lastOrder.Rate;
+      var minOrder = GetMinOrderByRate(orderBook.Data.Sell);
+      //// TODO: Надо проверять на наличие по количеству
+      
+      return minOrder.Rate;
+    }
+    
+    private BittrexOrderBookEntry GetMinOrderByRate(List<BittrexOrderBookEntry> orders)
+    {
+      var result = default(BittrexOrderBookEntry);
+      var maxRate = orders.FirstOrDefault()?.Rate;
+
+      for (var i = 0; i < orders.Count; i++)
+      {
+        var order = orders[i];
+
+        if (order.Rate <= maxRate)
+        {
+          result = order;
+        }
+      }
+
+      return result;
+    }
+
+    private BittrexOrderBookEntry GetMaxOrderByRate(List<BittrexOrderBookEntry> orders)
+    {
+      var result = default(BittrexOrderBookEntry);
+      var maxRate = orders.FirstOrDefault()?.Rate;
+
+      for (var i = 0; i < orders.Count; i++)
+      {
+        var order = orders[i];
+
+        if (order.Rate >= maxRate)
+        {
+          result = order;
+        }
+      }
+
+      return result;
     }
 
     public async Task<decimal> GetActualSellPrice()
     {
       var orderBook = await _httpClient.GetOrderBookAsync(_marketName);
-      var lastOrder = orderBook.Data.Sell.LastOrDefault();
-      return lastOrder.Rate;
+      var minOrder = GetMaxOrderByRate(orderBook.Data.Buy);
+      
+      return minOrder.Rate;
     }
+
+    public async Task<Guid> PlaceOrderOnSell(decimal amount, decimal rate)
+    {
+//      var result = await _httpClient.PlaceOrderAsync(OrderSide.Sell, _marketName, amount, rate);
+
+//      return result.Data.Uuid;
+      return Guid.NewGuid();
+    }
+
+    public async Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate)
+    {
+//      var result = await _httpClient.PlaceOrderAsync(OrderSide.Buy, _marketName, amount, rate);
+
+//      return result.Data.Uuid;
+      return Guid.NewGuid();
+    }
+
 
     public void Dispose()
     {

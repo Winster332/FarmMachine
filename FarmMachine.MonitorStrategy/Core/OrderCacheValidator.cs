@@ -108,7 +108,7 @@ namespace FarmMachine.MonitorStrategy.Core
         {
           Id = Guid.NewGuid(),
           Created = DateTime.Now,
-          Amount = 18,
+          Amount = 0,
           Bid = order.Price
         });
       }
@@ -120,7 +120,7 @@ namespace FarmMachine.MonitorStrategy.Core
         {
           Id = Guid.NewGuid(),
           Created = DateTime.Now,
-          Amount = 18,
+          Amount = 0,
           Ask = order.Price
         });
       }

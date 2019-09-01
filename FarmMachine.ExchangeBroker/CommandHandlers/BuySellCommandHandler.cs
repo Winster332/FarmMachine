@@ -21,7 +21,8 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
     
     public async Task Consume(ConsumeContext<BuyCurrency> context)
     {
-      var amount = _exchange.RiskManager.GetActualAmount();
+      var amount = await _exchange.RiskManager.GetActualBuyAmount();
+      var rate = await _exchange.GetActualBuyPrice();
       
       await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
       {
@@ -31,10 +32,15 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         { "timestamp", context.Message.Created },
         { "type", "buy" }
       }));
+
+      var orderId = await _exchange.PlaceOrderOnBuy(amount, rate);
     }
 
     public async Task Consume(ConsumeContext<SellCurrency> context)
     {
+      var amount = await _exchange.RiskManager.GetActualSellAmount();
+      var rate = await _exchange.GetActualSellPrice();
+      
       await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
       {
         { "_id", context.Message.Id },
@@ -43,6 +49,8 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         { "timestamp", context.Message.Created },
         { "type", "sell" }
       }));
+      
+      var orderId = await _exchange.PlaceOrderOnSell(amount, rate);
     }
   }
 }

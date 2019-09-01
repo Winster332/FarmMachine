@@ -1,11 +1,13 @@
 using System.Linq;
+using System.Threading.Tasks;
 using FarmMachine.ExchangeBroker.Exchanges;
 
 namespace FarmMachine.ExchangeBroker.Services
 {
   public interface IRiskManagerService
   {
-    decimal GetActualAmount();
+    Task<decimal> GetActualSellAmount();
+    Task<decimal> GetActualBuyAmount();
   }
 
   public class RiskManagerService : IRiskManagerService
@@ -25,9 +27,14 @@ namespace FarmMachine.ExchangeBroker.Services
       CurrencySecond = pair.LastOrDefault();
     }
 
-    public decimal GetActualAmount()
+    public async Task<decimal> GetActualSellAmount()
     {
-      return 0;
+      return await _exchange.GetBalance(CurrencySecond);
+    }
+    
+    public async Task<decimal> GetActualBuyAmount()
+    {
+      return await _exchange.GetBalance(CurrencyFirst);
     }
   }
 }
