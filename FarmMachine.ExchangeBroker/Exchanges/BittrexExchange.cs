@@ -26,6 +26,7 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     Task<Guid> PlaceOrderOnBuy(decimal amount, decimal rate);
     Task CancelOrder(Guid orderId);
     PlaceOrderWorker GetPlaceWorker();
+    Task<bool> IsOpenOrder(Guid id);
   }
 
   public class BittrexExchange : IBittrexExchange
@@ -62,6 +63,22 @@ namespace FarmMachine.ExchangeBroker.Exchanges
       _socketClient = new BittrexSocketClient();
       
       _placeOrderWorker.Start();
+    }
+
+    public async Task<bool> IsOpenOrder(Guid id)
+    {
+      var isOpen = false;
+      try
+      {
+        var order = await _httpClient.GetOrderAsync(id);
+        isOpen = order.Data.IsOpen;
+      }
+      catch (Exception ex)
+      {
+        isOpen = false;
+      }
+
+      return isOpen;
     }
 
     public async Task<decimal> GetBalance(string currency)

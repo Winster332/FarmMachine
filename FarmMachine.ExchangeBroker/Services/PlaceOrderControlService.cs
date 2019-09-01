@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FarmMachine.Domain.Models;
 using FarmMachine.ExchangeBroker.Exchanges;
 
@@ -7,8 +8,10 @@ namespace FarmMachine.ExchangeBroker.Services
 {
   public interface IPlaceOrderControlService
   {
+    IBittrexExchange GetExchange();
     void AddOrder(MetaOrder metaOrder);
     List<MetaOrder> ReadAllOrders();
+    void RemoveOrder(Guid Id);
   }
 
   public class PlaceOrderControlService : IPlaceOrderControlService
@@ -22,6 +25,11 @@ namespace FarmMachine.ExchangeBroker.Services
       _orders = new List<MetaOrder>();
     }
 
+    public IBittrexExchange GetExchange()
+    {
+      return _exchange;
+    }
+
     public void AddOrder(MetaOrder metaOrder)
     {
       _orders.Add(metaOrder);
@@ -30,6 +38,16 @@ namespace FarmMachine.ExchangeBroker.Services
     public List<MetaOrder> ReadAllOrders()
     {
       return _orders;
+    }
+
+    public void RemoveOrder(Guid Id)
+    {
+      var order = _orders.FirstOrDefault(x => x.OrderId == Id);
+      
+      if (order != null)
+      {
+        _orders.Remove(order);
+      }
     }
   }
 }

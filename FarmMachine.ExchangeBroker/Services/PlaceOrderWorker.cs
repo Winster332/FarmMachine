@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FarmMachine.Domain.Models;
@@ -34,6 +35,7 @@ namespace FarmMachine.ExchangeBroker.Services
       while (_isWork)
       {
         var orders = _placeOrderControlService.ReadAllOrders();
+        var removedOrders = new List<MetaOrder>();
         
         if (orders.Count != 0)
         {
@@ -44,14 +46,37 @@ namespace FarmMachine.ExchangeBroker.Services
 
             if (elapsed.TotalSeconds >= 10)
             {
-              if (order.OrderType == OrderEventType.Buy)
+              var isOpen = _placeOrderControlService.GetExchange().IsOpenOrder(order.OrderId).GetAwaiter().GetResult();
+
+              if (isOpen)
               {
-                RefreshOnBuy?.Invoke(this, order);
+                if (order.OrderType == OrderEventType.Buy)
+                {
+                  RefreshOnBuy?.Invoke(this, order);
+                  
+                  removedOrders.Add(order);
+                }
+                else if (order.OrderType == OrderEventType.Sell)
+                {
+                  RefreshOnSell?.Invoke(this, order);
+                  
+                  removedOrders.Add(order);
+                }
               }
-              else if (order.OrderType == OrderEventType.Sell)
+              else
               {
-                RefreshOnSell?.Invoke(this, order);
+                removedOrders.Add(order);
               }
+            }
+          }
+
+          if (removedOrders.Count != 0)
+          {
+            for (var i = 0; i < removedOrders.Count; i++)
+            {
+              var removeOrder = removedOrders[i];
+              
+              _placeOrderControlService.RemoveOrder(removeOrder.OrderId);
             }
           }
         }
