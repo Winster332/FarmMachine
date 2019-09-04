@@ -4,6 +4,15 @@ This is a service consisting of two microservices that allows you to configure o
 
 The data project is experimental, and is not recommended for reliable use.
 
+## Supported exchanges
+
+| Name         | Version            | Support |
+| ------------- |:------------------:| -------:|
+|  [BITTREX](https://international.bittrex.com/)     |   1.0.0  | Yes   |
+|  [BINANCE](https://www.binance.com/ru)         |   future   | No   |
+|  [POLONIEX](https://poloniex.com/)         |   future   | No   |
+|  [HitBTC](https://hitbtc.com/)         |   future   | No   |
+
 ## Links
 [TradeView](https://ru.tradingview.com)
 <br>
