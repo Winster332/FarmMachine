@@ -5,10 +5,10 @@ This is a service consisting of two microservices that allows you to configure o
 The data project is experimental, and is not recommended for reliable use.
 
 ## Links
-TradeView - https://ru.tradingview.com
+[TradeView](https://ru.tradingview.com)
 <br>
-Chromium - https://github.com/cefsharp/CefSharp
+[Chromium](https://github.com/cefsharp/CefSharp)
 <br>
-Bittrex.Net - https://github.com/JKorf/Bittrex.Net
+[Bittrex.Net](https://github.com/JKorf/Bittrex.Net)
 <br>
-CQ - https://github.com/jamietre/CsQuery
+[CQ](https://github.com/jamietre/CsQuery)
