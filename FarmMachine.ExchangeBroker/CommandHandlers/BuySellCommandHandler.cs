@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
+using FarmMachine.Domain.Services;
 using FarmMachine.ExchangeBroker.Exchanges;
 using MassTransit;
 using MongoDB.Bson;
@@ -25,26 +26,36 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
     public async Task Consume(ConsumeContext<BuyCurrency> context)
     {
       // Указываем количество сколько нужно закупиться BTC
-      var amount = 0.001m;//await _exchange.RiskManager.GetActualBuyAmount();
+//      var amount = 0.001m;//await _exchange.RiskManager.GetActualBuyAmount();
+      var amountInCurrency = await _exchange.RiskManager.GetActualBuyAmount();
       var rate = await _exchange.GetActualBuyPrice();
+      var converter = new TradeCalcService();
+      var amount = converter.GetBuyAmount(amountInCurrency, rate);
       
       Log.Information($"GET[BUY] => USD amount [{amount}] by [{rate}]");
 
-      if (amount <= 15)
+      if (amountInCurrency <= 15)
       {
-        Log.Warning($"Balance equal {amount}. Risk manager stopping FarmMachine.ExchangeBroker");
+        Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
 //        Environment.Exit(0);
       }
 
-      await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+      try
       {
-        { "_id", context.Message.Id },
-        { "amount", amount },
-        { "bid", context.Message.Bid },
-        { "timestamp", context.Message.Created },
-        { "type", "buy" }
-      }));
+        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+        {
+          {"_id", context.Message.Id},
+          {"amount", amount},
+          {"bid", context.Message.Bid},
+          {"timestamp", context.Message.Created},
+          {"type", "buy"}
+        }));
+      }
+      catch (Exception ex)
+      {
+        Log.Warning($"Invalid write to db: {ex}");
+      }
 
 //      await _exchange.PlaceOrderOnBuy(amount, rate);
     }
@@ -55,17 +66,24 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       // Обернуть инсерты в базу в блоки ексепшена
       var amount = 0.00050000m;//await _exchange.RiskManager.GetActualSellAmount();
       var rate = await _exchange.GetActualSellPrice();
-      
-      await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+
+      try
       {
-        { "_id", context.Message.Id },
-        { "amount", context.Message.Amount },
-        { "ask", context.Message.Ask },
-        { "timestamp", context.Message.Created },
-        { "type", "sell" }
-      }));
-      
-      await _exchange.PlaceOrderOnSell(amount, rate);
+        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+        {
+          {"_id", context.Message.Id},
+          {"amount", context.Message.Amount},
+          {"ask", context.Message.Ask},
+          {"timestamp", context.Message.Created},
+          {"type", "sell"}
+        }));
+      }
+      catch (Exception ex)
+      {
+        Log.Warning($"Invalid write to db: {ex}");
+      }
+
+//      await _exchange.PlaceOrderOnSell(amount, rate);
     }
   }
 }

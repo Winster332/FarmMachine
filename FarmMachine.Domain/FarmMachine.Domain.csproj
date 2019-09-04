@@ -48,6 +48,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Services\ProtocolRepository.cs" />
         <Compile Include="Services\TimeSchedulerService.cs" />
+        <Compile Include="Services\TradeCalcService.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
