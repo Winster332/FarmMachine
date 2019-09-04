@@ -12,3 +12,7 @@ The data project is experimental, and is not recommended for reliable use.
 [Bittrex.Net](https://github.com/JKorf/Bittrex.Net)
 <br>
 [CQ](https://github.com/jamietre/CsQuery)
+
+LICENCE
+-------
+[GNU General Public License v3.0](https://github.com/Winster332/FarmMachine/blob/master/LICENSE)
