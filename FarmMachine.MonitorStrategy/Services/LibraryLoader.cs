@@ -3,7 +3,7 @@ using System.Text;
 using CefSharp.Wpf;
 using Serilog;
 
-namespace FarmMachine.MonitorStrategy.Core
+namespace FarmMachine.MonitorStrategy.Services
 {
   public class LibraryLoader
   {

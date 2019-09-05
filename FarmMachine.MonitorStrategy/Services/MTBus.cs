@@ -4,7 +4,7 @@ using GreenPipes;
 using MassTransit;
 using Serilog;
 
-namespace FarmMachine.MonitorStrategy.Core
+namespace FarmMachine.MonitorStrategy.Services
 {
   public class MTBus
   {

@@ -3,29 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
+using FarmMachine.MonitorStrategy.Models;
 using Serilog;
 
-namespace FarmMachine.MonitorStrategy.Core
+namespace FarmMachine.MonitorStrategy.Services
 {
-  public enum ValidationStatus
-  {
-    Pushed,
-    Reload,
-    NotFound
-  }
-
-  public class ValidationResult
-  {
-    public ValidationStatus Status { get; set; }
-    public int DetectedCount { get; set; }
-    public OrderEventBacktest Order { get; set; }
-
-    public override string ToString()
-    {
-      return $"Status [{Status}] Detected count [{DetectedCount}] OrderEvent.Type [{Order.EventType}] OrderEvent.DateTime [{Order.DateTime}] OrderEvent.Price [{Order.Price}]";
-    }
-  }
-
   public class OrderCacheValidator
   {
     private Dictionary<DateTime, OrderEventBacktest> _cache { get; set; }

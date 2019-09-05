@@ -8,7 +8,8 @@ using CefSharp;
 using CsQuery;
 using FarmMachine.Domain.Models;
 using FarmMachine.Domain.Services;
-using FarmMachine.MonitorStrategy.Core;
+using FarmMachine.MonitorStrategy.Models;
+using FarmMachine.MonitorStrategy.Services;
 using MassTransit;
 using Serilog;
 
