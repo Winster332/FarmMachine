@@ -14,7 +14,7 @@ This is a service consisting of two microservices that allows you to configure o
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
 
 ## Build and start
-
+Before that, you need to configure RabbitMq and MongoDB. Then change the settings appsettings.json for yourself, and after that you can execute these commands
 ```powershell
 PS> .\farmmachine.ps1 build
 Microsoft (R) Build Engine version 16.2.0-preview-19278-01+d635043bd for .NET Core
@@ -28,6 +28,7 @@ PS> .\farmmachine.ps1 start
 Begin start FarmMachine.ExchangeBroker
 Begin start FarmMachine.MonitorStrategy
 ```
+After that, the integration service with exchanges should start. If everything went well, a terminal with your settings will appear. And after it, a second service will be launched to monitor the strategy
 
 ## Links
 [TradeView](https://ru.tradingview.com)
