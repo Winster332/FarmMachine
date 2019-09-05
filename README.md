@@ -13,6 +13,22 @@ This is a service consisting of two microservices that allows you to configure o
 |  [POLONIEX](https://poloniex.com/)         |   future   | No   |
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
 
+## Build and start
+
+```powershell
+PS> .\farmmachine.ps1 build
+Microsoft (R) Build Engine version 16.2.0-preview-19278-01+d635043bd for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 512.73 ms for C:\Users\Winster332\Desktop\FarmMachine\FarmMachine.ExchangeBroker\FarmMachine.ExchangeBroker.csproj.
+...
+...
+
+PS> .\farmmachine.ps1 start
+Begin start FarmMachine.ExchangeBroker
+Begin start FarmMachine.MonitorStrategy
+```
+
 ## Links
 [TradeView](https://ru.tradingview.com)
 <br>
