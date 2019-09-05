@@ -30,15 +30,15 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       var amountInCurrency = await _exchange.RiskManager.GetActualBuyAmount();
       var rate = await _exchange.GetActualBuyPrice();
       var converter = new TradeCalcService();
-      var amount = converter.GetBuyAmount(amountInCurrency, rate);
+      var amount = decimal.Round(converter.GetBuyAmount(amountInCurrency, rate), 8);
       
-      Log.Information($"GET[BUY] => USD amount [{amount}] by [{rate}]");
+      Log.Information($"GET[BUY] => USD amount [{amount} / {amountInCurrency}] rate [{rate}]");
 
       if (amountInCurrency <= 15)
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
-//        Environment.Exit(0);
+        Environment.Exit(0);
       }
 
       try
@@ -48,6 +48,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
           {"_id", context.Message.Id},
           {"amount", amount},
           {"bid", context.Message.Bid},
+          {"rate", rate},
           {"timestamp", context.Message.Created},
           {"type", "buy"}
         }));
@@ -64,9 +65,21 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
     {
       // Количество сколько нужно продать BTC
       // Обернуть инсерты в базу в блоки ексепшена
-      var amount = 0.00050000m;//await _exchange.RiskManager.GetActualSellAmount();
+//      var amountInCurrency = 0.00050000m;//await _exchange.RiskManager.GetActualSellAmount();
+      var amountInCurrency = 0.001m;//await _exchange.RiskManager.GetActualSellAmount();
       var rate = await _exchange.GetActualSellPrice();
+      var converter = new TradeCalcService();
+      var amount = decimal.Round(converter.GetSellAmount(amountInCurrency, rate), 8);
+      
+      Log.Information($"GET[SELL] => USD amount [{amount} / {amountInCurrency}] rate [{rate}]");
 
+      if (amountInCurrency <= 15)
+      {
+        Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
+        
+        Environment.Exit(0);
+      }
+      
       try
       {
         await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
@@ -74,6 +87,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
           {"_id", context.Message.Id},
           {"amount", context.Message.Amount},
           {"ask", context.Message.Ask},
+          {"rate", rate},
           {"timestamp", context.Message.Created},
           {"type", "sell"}
         }));

@@ -26,5 +26,17 @@ namespace FarmMachine.Domain.Services
 
       return result;
     }
+    
+    public decimal GetSellAmount(decimal amount, decimal askPrice)
+    {
+      var fullAmount = amount;
+
+      var resultAmount = fullAmount * askPrice;
+
+      var resultWithFee = resultAmount * GetFee();
+      var result = resultAmount - resultWithFee;
+
+      return result;
+    }
   }
 }

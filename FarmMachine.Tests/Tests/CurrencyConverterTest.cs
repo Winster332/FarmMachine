@@ -17,5 +17,17 @@ namespace FarmMachine.Tests.Tests
 
       Assert.Equal(result, 0.00171131m);
     }
+    
+    [Fact]
+    public void TestConvertBTCToUSD()
+    {
+      var tradeCalc = new TradeCalcService();
+      var amountBTC = 0.00171131m;
+      var price = 10491.94100000m;
+
+      var result = decimal.Round(tradeCalc.GetSellAmount(amountBTC, price), 8);
+
+      Assert.Equal(result, 17.91007614m);
+    }
   }
 }
