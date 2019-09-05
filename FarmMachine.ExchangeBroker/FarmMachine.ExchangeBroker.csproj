@@ -8,8 +8,9 @@
     <ItemGroup>
       <PackageReference Include="Autofac" Version="4.9.4" />
       <PackageReference Include="Bittrex.Net" Version="3.1.7" />
-      <PackageReference Include="MassTransit" Version="5.5.6-develop.2129" />
-      <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.6-develop.2129" />
+      <PackageReference Include="MassTransit" Version="5.5.6-develop.2144" />
+      <PackageReference Include="MassTransit.Autofac" Version="5.5.6-develop.2144" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.6-develop.2144" />
       <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
       <PackageReference Include="Serilog" Version="2.9.0-dev-01119" />
       <PackageReference Include="Serilog.Sinks.Console" Version="3.1.2-dev-00823" />

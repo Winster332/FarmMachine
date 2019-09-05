@@ -67,30 +67,52 @@ namespace FarmMachine.ExchangeBroker
       var mongoClient = new MongoClient(_settings.Db.DbConnectoin);
       var database = mongoClient.GetDatabase(_settings.Db.DbName);
       
-      var exchange = new BittrexExchange(_settings);
+//      var exchange = new BittrexExchange(_settings);
       
       var builder = new ContainerBuilder();
 
       builder.RegisterInstance(database).As<IMongoDatabase>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
-      builder.RegisterInstance(exchange).As<IBittrexExchange>().SingleInstance();
+      builder.RegisterType<BittrexExchange>().As<IBittrexExchange>().SingleInstance();
+      builder.RegisterType<BuySellCommandHandler>();
       
-      builder.RegisterInstance(Bus.Factory.CreateUsingRabbitMq(x =>
+      builder.AddMassTransit(x =>
       {
-        var host = x.Host(_settings.RabbitMQ.Host, h => { });
+        x.AddConsumer<BuySellCommandHandler>();
 
-        x.UseDelayedExchangeMessageScheduler();
-
-        x.ReceiveEndpoint(host, "farm_machine", cfg =>
+        x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
         {
-            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(database, exchange));
-//            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
+          var host = cfg.Host(_settings.RabbitMQ.Host, h => { });
+          
+          x.AddConsumers(Assembly.GetExecutingAssembly());
 
-          cfg.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
-        });
+          cfg.ReceiveEndpoint(host, "farm_machine", ec =>
+          {
+//            ec.ConfigureConsumers(context);
+//            ec.ConfigureConsumer<BuySellCommandHandler>(context);
+          });
 
-        x.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
-      })).As<IBusControl>().SingleInstance();
+          // or, configure the endpoints by convention
+          cfg.ConfigureEndpoints(context);
+        }));
+      });
+      
+//      builder.RegisterInstance(Bus.Factory.CreateUsingRabbitMq(x =>
+//      {
+//        var host = x.Host(_settings.RabbitMQ.Host, h => { });
+//
+//        x.UseDelayedExchangeMessageScheduler();
+//
+//        x.ReceiveEndpoint(host, "farm_machine", cfg =>
+//        {
+//            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(database, exchange));
+////            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
+//
+//          cfg.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
+//        });
+//
+//        x.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
+//      })).As<IBusControl>().SingleInstance();
 
       _container = builder.Build();
 
