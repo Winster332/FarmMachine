@@ -13,6 +13,52 @@ This is a service consisting of two microservices that allows you to configure o
 |  [POLONIEX](https://poloniex.com/)         |   future   | No   |
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
 
+## Build and start
+
+Before that, you need to configure RabbitMq and MongoDB. Then change the settings appsettings.json for yourself, and after that you can execute these commands
+
+```powershell
+PS> .\farmmachine.ps1 build
+Microsoft (R) Build Engine version 16.2.0-preview-19278-01+d635043bd for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 512.73 ms for C:\Users\Winster332\Desktop\FarmMachine\FarmMachine.ExchangeBroker\FarmMachine.ExchangeBroker.csproj.
+...
+...
+
+PS> .\farmmachine.ps1 start
+Begin start FarmMachine.ExchangeBroker
+Begin start FarmMachine.MonitorStrategy
+```
+After that, the integration service with exchanges should start. If everything went well, a terminal with your settings will appear. And after it, a second service will be launched to monitor the strategy
+
+## Integration through RabbitMQ
+
+If you want to use only part of this project. You can easily integrate through the RabbitMQ bus. To do this, you need to connect to the queue
+> farm_machine
+
+and after that send messages to buy or sell:
+
+> FarmMachine.Domain.Commands.Exchange:SellCurrency
+```C#
+public interface BuyCurrency
+{
+    Guid Id { get; set; }
+    DateTime Created { get; set; }
+    decimal Amount { get; set; }
+    decimal Bid { get; set; }
+}
+```
+> FarmMachine.Domain.Commands.Exchange:BuyCurrency
+```C#
+public interface SellCurrency
+{
+  Guid Id { get; set; }
+  DateTime Created { get; set; }
+  decimal Amount { get; set; }
+  decimal Ask { get; set; }
+}
+```
 ## Links
 [TradeView](https://ru.tradingview.com)
 <br>
