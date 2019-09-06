@@ -37,6 +37,8 @@ After that, the integration service with exchanges should start. If everything w
 
 ### Configurations
 
+The configuration file is located in **FarmMachine/FarmMachine.ExchangeBroker/appsettings.json**
+
 ```javascript
 {
   "database": { // MongoDB config section
