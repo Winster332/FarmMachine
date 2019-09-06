@@ -4,3 +4,5 @@
 /FarmMachine.Launcher/obj
 /FarmMachine.Tests/obj
 /FarmMachine.Domain/bin
+/FarmMachine.ExchangeBroker.Simulator/bin
+/FarmMachine.ExchangeBroker.Simulator/obj
