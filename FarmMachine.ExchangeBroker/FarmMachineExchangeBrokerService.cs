@@ -79,6 +79,7 @@ namespace FarmMachine.ExchangeBroker
       builder.AddMassTransit(x =>
       {
         x.AddConsumer<BuySellCommandHandler>();
+        x.AddConsumer<BuySellFaultHandler>();
 
         x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
         {
