@@ -18,6 +18,12 @@ The project works exclusively on Windows. Since the project uses the chromium en
 
 ### Scheme
 
+orange - development in progress
+<br>
+red - part due to which docker is not used
+<br>
+blue - direct functions not available
+
 ![N|Solid](https://github.com/Winster332/FarmMachine/blob/master/Resources/scheme.png)
 
 ## Build and start
