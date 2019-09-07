@@ -92,13 +92,23 @@ public interface SellCurrency
 }
 ```
 ## Links
-[TradeView](https://ru.tradingview.com)
+[MassTransit](https://github.com/MassTransit/MassTransit) - for RabbitMQ
 <br>
-[Chromium](https://github.com/cefsharp/CefSharp)
+[TradeView](https://ru.tradingview.com) - read strategy
 <br>
-[Bittrex.Net](https://github.com/JKorf/Bittrex.Net)
+[Chromium](https://github.com/cefsharp/CefSharp) - load and integration with TradeView
 <br>
-[CQ](https://github.com/jamietre/CsQuery)
+[Bittrex.Net](https://github.com/JKorf/Bittrex.Net) - for integration with BITTREX API
+<br>
+[Topshelf](https://github.com/Topshelf/Topshelf) - run app as service
+<br>
+[CQ](https://github.com/jamietre/CsQuery) - html parser
+<br>
+[Serilog](https://github.com/serilog/serilog) - logger
+<br>
+[Autofac](https://github.com/autofac/Autofac) - DI
+<br>
+[MongoDB](https://github.com/mongodb/mongo-csharp-driver) - as load and save documents
 
 LICENCE
 -------
