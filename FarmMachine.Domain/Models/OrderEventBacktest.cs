@@ -23,11 +23,13 @@ namespace FarmMachine.Domain.Models
     {
       var orderEvent = new OrderEventBacktest();
 
-      if (eventType == "SELL")
+      eventType = eventType.ToUpper();
+      
+      if (eventType == "SELL" || eventType == "SHORT")
       {
         orderEvent.EventType = OrderEventType.Sell;
       }
-      else if (eventType == "BUY")
+      else if (eventType.ToLower() == "BUY" || eventType == "LONG")
       {
         orderEvent.EventType = OrderEventType.Buy;
       }

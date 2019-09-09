@@ -38,7 +38,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
-        Environment.Exit(0);
+//        Environment.Exit(0);
       }
 
       try
@@ -66,18 +66,18 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       // Количество сколько нужно продать BTC
       // Обернуть инсерты в базу в блоки ексепшена
 //      var amountInCurrency = 0.00050000m;//await _exchange.RiskManager.GetActualSellAmount();
-      var amountInCurrency = 0.001m;//await _exchange.RiskManager.GetActualSellAmount();
+      var amountInCurrency = await _exchange.RiskManager.GetActualSellAmount();
       var rate = await _exchange.GetActualSellPrice();
       var converter = new TradeCalcService();
       var amount = decimal.Round(converter.GetSellAmount(amountInCurrency, rate), 8);
       
       Log.Information($"GET[SELL] => USD amount [{amount} / {amountInCurrency}] rate [{rate}]");
 
-      if (amountInCurrency <= 15)
+      if (amount <= 10)
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
-        Environment.Exit(0);
+//        Environment.Exit(0);
       }
       
       try
@@ -97,7 +97,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
         Log.Warning($"Invalid write to db: {ex}");
       }
 
-//      await _exchange.PlaceOrderOnSell(amount, rate);
+//      await _exchange.PlaceOrderOnSell(amountInCurrency, rate);
     }
   }
 }
