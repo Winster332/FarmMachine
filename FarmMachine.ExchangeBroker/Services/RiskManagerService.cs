@@ -8,6 +8,7 @@ namespace FarmMachine.ExchangeBroker.Services
   {
     Task<decimal> GetActualSellAmount();
     Task<decimal> GetActualBuyAmount();
+    decimal GetBalanceMinLimit();
   }
 
   public class RiskManagerService : IRiskManagerService
@@ -15,7 +16,9 @@ namespace FarmMachine.ExchangeBroker.Services
     private IBittrexExchange _exchange;
     public string CurrencyFirst { get; set; }
     public string CurrencySecond { get; set; }
-    public RiskManagerService(IBittrexExchange exchange, string market)
+    private decimal _balanceMinLimit { get; set; }
+    
+    public RiskManagerService(IBittrexExchange exchange, string market, decimal balanceMinLimit)
     {
       _exchange = exchange;
       
@@ -25,6 +28,7 @@ namespace FarmMachine.ExchangeBroker.Services
 
       CurrencyFirst = pair.FirstOrDefault();
       CurrencySecond = pair.LastOrDefault();
+      _balanceMinLimit = balanceMinLimit;
     }
 
     public async Task<decimal> GetActualSellAmount()
@@ -35,6 +39,11 @@ namespace FarmMachine.ExchangeBroker.Services
     public async Task<decimal> GetActualBuyAmount()
     {
       return await _exchange.GetBalance(CurrencyFirst);
+    }
+
+    public decimal GetBalanceMinLimit()
+    {
+      return _balanceMinLimit;
     }
   }
 }

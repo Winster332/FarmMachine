@@ -31,10 +31,11 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       var rate = await _exchange.GetActualBuyPrice();
       var converter = new TradeCalcService();
       var amount = decimal.Round(converter.GetBuyAmount(amountInCurrency, rate), 8);
+      var balanceMinLimit = _exchange.RiskManager.GetBalanceMinLimit();
       
       Log.Information($"GET[BUY] => USD amount [{amount} / {amountInCurrency}] rate [{rate}]");
 
-      if (amountInCurrency <= 15)
+      if (amountInCurrency <= balanceMinLimit)
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
@@ -70,10 +71,11 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       var rate = await _exchange.GetActualSellPrice();
       var converter = new TradeCalcService();
       var amount = decimal.Round(converter.GetSellAmount(amountInCurrency, rate), 8);
+      var balanceMinLimit = _exchange.RiskManager.GetBalanceMinLimit();
       
       Log.Information($"GET[SELL] => USD amount [{amount} / {amountInCurrency}] rate [{rate}]");
 
-      if (amount <= 10)
+      if (amount <= balanceMinLimit)
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         

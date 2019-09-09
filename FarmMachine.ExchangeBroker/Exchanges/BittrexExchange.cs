@@ -43,7 +43,7 @@ namespace FarmMachine.ExchangeBroker.Exchanges
     {
       _settings = settings;
       _marketName = settings.Bittrex.Market;
-      RiskManager = new RiskManagerService(this, settings.Bittrex.Market);
+      RiskManager = new RiskManagerService(this, settings.Bittrex.Market, settings.Bittrex.RiskManager.BalanceMinLimit);
       PlaceOrderController = new PlaceOrderControlService(this);
       _placeOrderWorker = new PlaceOrderWorker(PlaceOrderController);
 //      _placeOrderWorker.RefreshOnBuy += PlaceOrderWorkerOnRefreshOnBuy;
