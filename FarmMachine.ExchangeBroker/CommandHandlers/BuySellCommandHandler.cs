@@ -39,7 +39,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
         
-//        Environment.Exit(0);
+        return;
       }
 
       try
@@ -78,8 +78,8 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       if (amount <= balanceMinLimit)
       {
         Log.Warning($"Balance equal {amountInCurrency}. Risk manager stopping FarmMachine.ExchangeBroker");
-        
-//        Environment.Exit(0);
+
+        return;
       }
       
       try
