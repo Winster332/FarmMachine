@@ -12,7 +12,7 @@ The project works exclusively on Windows. Since the project uses the chromium en
 | Name         | Version            | Support |
 | ------------- |:------------------:| -------:|
 |  [BITTREX](https://international.bittrex.com/)     |   1.0.0  | Yes   |
-|  [BINANCE](https://www.binance.com/ru)         |   future   | No   |
+|  [BINANCE](https://www.binance.com/ru)         |   1.0.0   | Yes   |
 |  [POLONIEX](https://poloniex.com/)         |   future   | No   |
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
 
@@ -109,6 +109,8 @@ public interface SellCurrency
 [Chromium](https://github.com/cefsharp/CefSharp) - load and integration with TradeView
 <br>
 [Bittrex.Net](https://github.com/JKorf/Bittrex.Net) - for integration with BITTREX API
+<br>
+[Binance.Net](https://github.com/JKorf/Binance.Net) = for integration with Binance API
 <br>
 [Topshelf](https://github.com/Topshelf/Topshelf) - run app as service
 <br>
