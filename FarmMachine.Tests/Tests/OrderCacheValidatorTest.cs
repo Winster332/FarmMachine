@@ -24,6 +24,24 @@ namespace FarmMachine.Tests.Tests
       
       Assert.Equal(countDetectedOrders, 0);
     }
+    
+    [Fact]
+    public void OrdersCahchIsFillTest()
+    {
+      var pairs = GetPairs();
+      var countDetectedOrders = 0;
+      var orderCache = new OrderCacheValidator();
+      
+      orderCache.DetectOrder += (sender, backtest) =>
+      {
+        countDetectedOrders++;
+      };
+
+      orderCache.Push(pairs);
+      orderCache.Push(pairs);
+      
+      Assert.Equal(countDetectedOrders, 0);
+    }
 
     private List<BacktestOrderPair> GetPairs()
     {
