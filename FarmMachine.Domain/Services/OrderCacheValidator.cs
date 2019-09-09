@@ -79,15 +79,17 @@ namespace FarmMachine.Domain.Services
 
     private void Cleanup()
     {
-      var borderDateTime = DateTime.Now.AddMonths(-6);
+      var borderDateTime = DateTime.Now.AddHours(-12);
 
-      foreach (var orderEventBacktest in _cache)
+      for (var i = 0; i < _cache.Count; i++)
       {
-        var order = orderEventBacktest.Value;
+        var key = _cache.Keys.ToArray()[i];
+        var value = _cache.Values.ToArray()[i];
+        var order = value;
 
         if (order.DateTime <= borderDateTime)
         {
-          _cache.Remove(orderEventBacktest.Key);
+          _cache.Remove(key);
         }
       }
     }
