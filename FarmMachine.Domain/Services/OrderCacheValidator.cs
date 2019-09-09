@@ -1,21 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
-using FarmMachine.MonitorStrategy.Models;
 using Serilog;
 
-namespace FarmMachine.MonitorStrategy.Services
+namespace FarmMachine.Domain.Services
 {
   public class OrderCacheValidator
   {
+    public event EventHandler<OrderEventBacktest> DetectOrder;
     private Dictionary<DateTime, OrderEventBacktest> _cache { get; set; }
-    private MTBus _mtBus;
 
-    public OrderCacheValidator(MTBus bus)
+    public OrderCacheValidator()
     {
-      _mtBus = bus;
       _cache = new Dictionary<DateTime, OrderEventBacktest>();
     }
 
@@ -51,7 +48,7 @@ namespace FarmMachine.MonitorStrategy.Services
 
         if (targetOrder.DateTime.Hour == nowHour)
         {
-          PushNotification(targetOrder);
+          DetectOrder?.Invoke(this, targetOrder);
           
           result.Status = ValidationStatus.Pushed;
         }
@@ -78,38 +75,6 @@ namespace FarmMachine.MonitorStrategy.Services
       Cleanup();
 
       return result;
-    }
-
-    private void PushNotification(OrderEventBacktest order)
-    {
-      if (order.EventType == OrderEventType.Buy)
-      {
-        Log.Information($"Buy order: {order}");
-          
-        _mtBus.GetBus().Publish<BuyCurrency>(new
-        {
-          Id = Guid.NewGuid(),
-          Created = DateTime.Now,
-          Amount = 0,
-          Bid = order.Price
-        });
-      }
-      else if (order.EventType == OrderEventType.Sell)
-      {
-        Log.Information($"Sell order: {order}");
-        
-        _mtBus.GetBus().Publish<SellCurrency>(new
-        {
-          Id = Guid.NewGuid(),
-          Created = DateTime.Now,
-          Amount = 0,
-          Ask = order.Price
-        });
-      }
-      else if (order.EventType == OrderEventType.Unknown)
-      {
-        Log.Information($"Unknown order: {order}");
-      }
     }
 
     private void Cleanup()

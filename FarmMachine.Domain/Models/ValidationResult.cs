@@ -1,6 +1,4 @@
-using FarmMachine.Domain.Models;
-
-namespace FarmMachine.MonitorStrategy.Models
+namespace FarmMachine.Domain.Models
 {
   public class ValidationResult
   {

@@ -6,9 +6,9 @@ using System.Threading;
 using System.Windows;
 using CefSharp;
 using CsQuery;
+using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Models;
 using FarmMachine.Domain.Services;
-using FarmMachine.MonitorStrategy.Models;
 using FarmMachine.MonitorStrategy.Services;
 using MassTransit;
 using Serilog;
@@ -43,7 +43,8 @@ namespace FarmMachine.MonitorStrategy
       _libLoader.Init();
       
       _mtBus = new MTBus();
-      _orderCache = new OrderCacheValidator(_mtBus);
+      _orderCache = new OrderCacheValidator();
+      _orderCache.DetectOrder += OrderCacheOnDetectOrder;
       
       Browser.FrameLoadEnd += WebBrowserFrameLoadEnded;
       this.Closing += OnClosing;
@@ -53,6 +54,39 @@ namespace FarmMachine.MonitorStrategy
       _timeScheduler.Start();
       
       Log.Information("Service started");
+    }
+
+    private void OrderCacheOnDetectOrder(object sender, OrderEventBacktest order)
+    {
+      if (order.EventType == OrderEventType.Buy)
+      {
+        Log.Information($"Buy order: {order}");
+          
+        
+        _mtBus.GetBus().Publish<BuyCurrency>(new
+        {
+          Id = Guid.NewGuid(),
+          Created = DateTime.Now,
+          Amount = 0,
+          Bid = order.Price
+        });
+      }
+      else if (order.EventType == OrderEventType.Sell)
+      {
+        Log.Information($"Sell order: {order}");
+        
+        _mtBus.GetBus().Publish<SellCurrency>(new
+        {
+          Id = Guid.NewGuid(),
+          Created = DateTime.Now,
+          Amount = 0,
+          Ask = order.Price
+        });
+      }
+      else if (order.EventType == OrderEventType.Unknown)
+      {
+        Log.Information($"Unknown order: {order}");
+      }
     }
 
     private void TimeSchedulerOnWork(object sender, EventArgs e)
