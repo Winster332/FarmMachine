@@ -68,7 +68,7 @@ namespace FarmMachine.Tests.Tests
         {
           EventType = OrderEventType.Buy,
           Price = 10262.28600000m,
-          DateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0)
+          DateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 30, 0)
         },
         Right = new OrderEventBacktest
         {
@@ -77,7 +77,7 @@ namespace FarmMachine.Tests.Tests
           DateTime = new DateTime(now.Year, now.Month, now.Day, now.Hour, 30, 0)
         }
       });
-      orderCache.Push(pairs);
+      orderCache.Push(doublePairts);
       
       Assert.Equal(countDetectedOrders, 1);
     }

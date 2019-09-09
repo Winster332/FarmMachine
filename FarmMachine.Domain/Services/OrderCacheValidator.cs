@@ -21,8 +21,14 @@ namespace FarmMachine.Domain.Services
       Log.Information("Push validation orders");
       
       var result = new ValidationResult();
-      var orders = pairs.Select(x => x.Right).Where(x => x != null).ToList();
+      var orders = pairs.Select(x => x.Right).Where(x => x != null).OrderBy(x => x.DateTime).Select(x => new OrderEventBacktest
+      {
+        EventType = x.EventType,
+        Price = x.Price,
+        DateTime = x.DateTime
+      }).ToList();
       var listNew = new List<OrderEventBacktest>();
+      var timeNow = DateTime.Now;
 
       foreach (var order in orders)
       {
@@ -32,6 +38,10 @@ namespace FarmMachine.Domain.Services
           
           listNew.Add(order);
         }
+//        else if (order.DateTime.Hour != timeNow.Hour && order.DateTime.Day != timeNow.Day)
+//        {
+//          _cache.Add(order.DateTime, order);
+//        }
       }
 
       result.DetectedCount = listNew.Count;
@@ -42,11 +52,10 @@ namespace FarmMachine.Domain.Services
         Log.Information("Detected new order from backtest");
         
         var targetOrder = listNew.LastOrDefault();
-        var nowHour = DateTime.Now.Hour;
         
         result.Order = targetOrder;
 
-        if (targetOrder.DateTime.Hour == nowHour)
+        if (targetOrder.DateTime.Hour == timeNow.Hour && targetOrder.DateTime.Day == timeNow.Day)
         {
           DetectOrder?.Invoke(this, targetOrder);
           
@@ -56,13 +65,15 @@ namespace FarmMachine.Domain.Services
         {
           result.Status = ValidationStatus.Reload;
           
-          Log.Information($"Order not equals by time. Need hour: [{nowHour}], fact: [{targetOrder.DateTime.Hour}]");
+          Log.Information($"Order not equals by time. Need hour: [{timeNow}], fact: [{targetOrder.DateTime.Hour}]");
+          
+//          _cache.Add(targetOrder.DateTime, targetOrder);
 
-          listNew.Remove(targetOrder);
-          foreach (var newOrder in listNew)
-          {
-            _cache.Remove(newOrder.DateTime);
-          }
+//          listNew.Remove(targetOrder);
+//          foreach (var newOrder in listNew)
+//          {
+//            _cache.Remove(newOrder.DateTime);
+//          }
         }
       }
       else
@@ -79,7 +90,7 @@ namespace FarmMachine.Domain.Services
 
     private void Cleanup()
     {
-      var borderDateTime = DateTime.Now.AddHours(-12);
+      var borderDateTime = DateTime.Now.AddDays(-5);
 
       for (var i = 0; i < _cache.Count; i++)
       {

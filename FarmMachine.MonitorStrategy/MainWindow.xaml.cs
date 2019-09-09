@@ -29,6 +29,7 @@ namespace FarmMachine.MonitorStrategy
     {
       Log.Logger = new LoggerConfiguration()
         .WriteTo.File("FarmMachine.MonitorStrategy.log")
+        .WriteTo.Console()
         .CreateLogger();
       
       Log.Information("Service starting...");
@@ -116,7 +117,7 @@ namespace FarmMachine.MonitorStrategy
           
           Browser.ExecuteScriptAsync("backtestListOrderScrollToBottom();");
           
-          Thread.Sleep(500);
+          Thread.Sleep(1000);
           
           Log.Information("Begin extract orders from backtest");
           var orders = ExtractOrders();
