@@ -1,0 +1,106 @@
+version: '3'
+
+services:
+    # redis:
+    #     image: redis:4-alpine
+    #     container_name: fm-redis
+    #     command: redis-server --appendonly yes
+    #     ports:
+    #     - "6379:6379"
+    #     networks:
+    #     - fm-net-ext
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: fm-rabbitmq
+        environment:
+        - RABBITMQ_DEFAULT_VHOST=fm_dev
+        ports:
+        - "8080:15672"
+        - "5671:5671"
+        - "5672:5672"
+        networks:
+        - fm-net-ext
+
+    mongo:
+        image: mongo:3.4
+        container_name: fm-mongo
+        ports:
+        - "27017:27017"
+        - "28017:28017"
+        volumes:
+        - ./mongo_backup:/backup
+        networks:
+        - fm-net-ext
+
+    # filebeat:
+    #     image: docker.elastic.co/beats/filebeat:5.6.3
+    #     container_name: fm-filebeat-worker
+    #     volumes:
+    #     - ./../Logging/filebeat.yml:/filebeat.yml
+    #     - ${fm_LOG_FOLDER}:/logs/
+    #     networks:
+    #     - fm-net-ext
+    #     depends_on:
+    #     - logstash
+
+    # logstash:
+    #     image: docker.elastic.co/logstash/logstash:5.6.3
+    #     container_name: fm-logstash
+    #     command: -f /config-dir/logstash.conf
+    #     ports:
+    #     - "5044:5044"
+    #     - "12201:12201"
+    #     - "12201:12201/udp"
+    #     - "12202:12202"
+    #     - "12202:12202/udp"
+    #     volumes:
+    #     - ./../Logging/logstash:/config-dir
+    #     - ./../Logging/logstash/patterns:/opt/logstash/patterns_extra
+    #     networks:
+    #     - fm-net-ext
+    #     depends_on:
+    #     - elasticsearch
+
+    # kibana:
+    #     image: docker.elastic.co/kibana/kibana:5.6.3
+    #     container_name: fm-kibana
+    #     environment:
+    #     - ELASTICSEARCH_URL:"elasticsearch:9201"
+    #     ports:
+    #     - "5601:5601"
+    #     networks:
+    #     - fm-net-ext
+    #     depends_on:
+    #     - elasticsearch
+
+    # elasticsearch:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    #     container_name: fm-es
+    #     environment:
+    #     - xpack.security.enabled=false 
+    #     - discovery.type=single-node
+    #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    #     volumes:
+    #     - ./../Logging/elasticsearch/data:/usr/share/elasticsearch/data
+    #     ports:
+    #     - "9200:9200"
+    #     networks:
+    #     - fm-net-ext
+        
+    # heartbeat:
+    #     image: docker.elastic.co/beats/heartbeat:5.6.3
+    #     container_name: fm-heartbeat
+    #     environment:
+    #     - COMPUTERNAME=${COMPUTERNAME}
+    #     volumes:
+    #     - ./heartbeat.local.yml:/usr/share/heartbeat/heartbeat.yml
+    #     networks:
+    #     - fm-net-ext
+    #     depends_on:
+    #     - elasticsearch
+
+networks:
+    fm-net-ext:
+        external:
+            name: fm-sys-net

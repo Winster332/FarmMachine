@@ -1,0 +1,79 @@
+  ################### Heartbeat Configuration Example #########################
+
+# This file is an example configuration file highlighting only some common options.
+# The heartbeat.reference.yml file in the same directory contains all the supported options
+# with detailed comments. You can use it for reference.
+#
+# You can find the full configuration reference here:
+# https://www.elastic.co/guide/en/beats/heartbeat/index.html
+
+############################# Heartbeat ######################################
+
+# Configure monitors
+heartbeat.monitors:
+- type: http
+  urls: ["http://nginx:8086/osdr/v1/api/version"]
+  name: OSDR Web Api
+  schedule: '@every 58s'
+
+- type: http
+  urls: ["http://nginx:8086/metadata/v1/api/version"]
+  name: SDS OSDR Infobox Metadata Web API
+  schedule: '@every 58s'
+ 
+- type: http
+  urls: ["http://nginx:8086/imaging/v1/api/version"]
+  name: SDS Imaging Web API
+  schedule: '@every 58s' 
+  
+- type: http
+  urls: ["http://nginx:8086/blob/v1/api/version"]
+  name: SDS Blob Storage Web API
+  schedule: '@every 58s'   
+  
+- type: tcp
+  hosts: ["osdr-service-persistence:11000"]
+  name: OSDR Persistence service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["osdr-service-sagahost:11010"]
+  name: SDS OSDR Saga Host Service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["osdr-service-frontend:11020"]
+  name: SDS OSDR Front End Commands Handler Service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["osdr-service-backend:11030"]
+  name: SDS OSDR Back End Commands Handler Service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["metadata-storage-processing:11050"]
+  name: SDS OSDR Infobox Metadata Processing Service
+  schedule: '@every 58s'
+  
+ - type: tcp
+  hosts: ["osdr-indexing:11090"]
+  name: SDS Indexing Service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["mulanback.rsc-us.org:12000"]
+  name: SDS Imaging Service
+  schedule: '@every 58s'
+
+- type: tcp
+  hosts: ["imaging-persistence:12020"]
+  name: SDS Imaging Persistence Service
+  schedule: '@every 58s'
+
+  
+setup.kibana:
+  host: "kibana:5601"
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]

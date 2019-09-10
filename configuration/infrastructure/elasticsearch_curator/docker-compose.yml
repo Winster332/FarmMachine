@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+    heartbeat:
+        container_name: fm-dev-elasticsearch-curator
+        image: docker.scidatasoft.com/elasticsearch-curator:latest
+        environment:
+        - HOST_NAME = elasticsearch
+        - CURATOR_PORT = 9200
+        - USE_SSL_FLAG = False
+        - SSL_NO_VALIDATE_FLAG = False
+        - TIMEOUT = 30
+        - MASTER_ONLY_FLAG = False
+        - LOG_LEVEL = INFO
+        - LOG_FORMAT = default
+        - BLACK_LIST = ['elasticsearch', 'urllib3']
+        volumes:
+        - /home/nick/curator/config.yml:/config.yml
+        - /home/nick/curator/action.yml:/action.yml
+        command: --config config.yml action.yml

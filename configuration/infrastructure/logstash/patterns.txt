@@ -1,0 +1,9 @@
+OSDR_TIMESTAMP %{YEAR}-%{MONTHNUM}-%{MONTHDAY}[T ]%{HOUR}:?%{MINUTE}(?::?%{SECOND})? %{ISO8601_TIMEZONE}?
+OSDR_LOGLEVEL (Verbose|Debug|Information|Warning|Error|Fatal)
+OSDR_SERVICE (webapi|worker|rabbitmq|redis)
+OSDR_LOG_FILE %[DATA:source-app]-%{YEAR}%{MONTHNUM}%{MONTHDAY}.log
+
+REDISTIMESTAMP %{MONTHDAY} %{MONTH} %{TIME}
+REDISLOG \[%{POSINT:pid}\] %{REDISTIMESTAMP:timestamp} \*
+
+RABBIT_TIME %{MONTHDAY}-%{MONTH}-%{YEAR}::%{HOUR}:%{MINUTE}:%{SECOND}
