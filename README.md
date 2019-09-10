@@ -107,6 +107,12 @@ The configuration file is located in **FarmMachine/FarmMachine.ExchangeBroker/ap
       "percent": 100, // // for type percent
       "balanceMinLimit": 15 // minimal balance on you wallet
     }
+  },
+  "telegram": {
+    "enabled": false,
+    "apiKey": your_telegram_api_key,
+    "apiHash": "your_telegram_api_hash",
+    "phoneNumber": "your_phone_number"
   }
 }
 ```
@@ -158,6 +164,8 @@ public interface SellCurrency
 [Autofac](https://github.com/autofac/Autofac) - DI
 <br>
 [MongoDB](https://github.com/mongodb/mongo-csharp-driver) - as load and save documents
+<br>
+[TLSharp](https://github.com/sochix/TLSharp) - telegram integrations
 
 LICENCE
 -------
