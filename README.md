@@ -15,6 +15,8 @@ The project works exclusively on Windows. Since the project uses the chromium en
 |  [BINANCE](https://www.binance.com/ru)         |   1.0.0   | Yes   |
 |  [POLONIEX](https://poloniex.com/)         |   future   | No   |
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
+|  [Bitstamp](https://www.bitstamp.net/)         |   future   | No   |
+|  [Bitfinex](https://www.bitfinex.com/)         |   future   | No   |
 
 Use the api key and secret to authorize your api exchange
 
