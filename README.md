@@ -5,6 +5,8 @@ This is a service consisting of two microservices that allows you to configure o
 
 > The data project is experimental, and is not recommended for reliable use.
 
+Reports on the work of Rabbit can be seen in [this table](https://docs.google.com/spreadsheets/d/1I9c0Wa98iYQpuwfH7Ijr6h4on4wzOlCQhKeiOg3TFtA/edit?usp=sharing). 
+<br>
 The project works exclusively on Windows. Since the project uses the chromium engine, this greatly complicates the transfer of the project to other OS.
 
 ## Supported exchanges
@@ -34,6 +36,8 @@ red - part due to which docker is not used
 blue - direct functions not available
 
 ![N|Solid](https://github.com/Winster332/FarmMachine/blob/master/Resources/scheme.png)
+
+Google Drive - [Draw.IO scheme](https://drive.google.com/file/d/1V9ktUXEDGq-747UuSGEsqQjPWD_fuzGH/view?usp=sharing)
 
 ## Build and start
 
