@@ -37,6 +37,30 @@ blue - direct functions not available
 
 ## Build and start
 
+Before you start building a project, you need to install a [Docker](https://www.docker.com). After installation and configuration. And after the launch of the infrastructure, you can start assembling the project services
+
+### Start infrastructure
+
+You must go to the [configuration/docker/](https://github.com/Winster332/FarmMachine/tree/master/configuration/docker) directive, and then run the following commands:
+
+```powershell
+PS> FarmMachine\configuration\docker> docker-compose -f docker-compose.infrastructure.local.yml build
+```
+
+Wait for the completion of the containers.
+<br>
+After that, you can begin to deploy the infrastructure.
+
+```powershell
+PS> FarmMachine\configuration\docker> docker-compose -f docker-compose.infrastructure.local.yml up
+```
+
+> Also worth noting, docker is not a required link. You can deploy everything on a real host. The minimum list consists of [MongoDB](https://github.com/mongodb/mongo-csharp-driver) and [RabbitMQ](https://www.rabbitmq.com/).
+
+If no errors appear, then the infrastructure is deployed correctly and you can proceed to the next step - to services.
+
+### Start services
+
 Before that, you need to configure RabbitMq and MongoDB. Then change the settings appsettings.json for yourself, and after that you can execute these commands
 
 ```powershell
