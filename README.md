@@ -109,6 +109,7 @@ The configuration file is located in **FarmMachine/FarmMachine.ExchangeBroker/ap
     }
   },
   "telegram": {
+    "enabled": false,
     "apiKey": your_telegram_api_key,
     "apiHash": "your_telegram_api_hash",
     "phoneNumber": "your_phone_number"
