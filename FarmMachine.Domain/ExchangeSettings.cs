@@ -45,7 +45,8 @@ namespace FarmMachine.Domain
       Telegram = new TelegramSettings
       {
         ApiKey = json["telegram"]["apiKey"].ToObject<int>(),
-        ApiHash = json["telegram"]["apiHash"].ToObject<string>()
+        ApiHash = json["telegram"]["apiHash"].ToObject<string>(),
+        PhoneNumber = json["telegram"]["phoneNumber"].ToObject<string>()
       };
     }
 
@@ -68,6 +69,7 @@ namespace FarmMachine.Domain
     {
       public int ApiKey { get; set; }
       public string ApiHash { get; set; }
+      public string PhoneNumber { get; set; }
     }
 
     public enum RiskManagerBalanceType
