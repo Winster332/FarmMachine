@@ -37,6 +37,8 @@ blue - direct functions not available
 
 ![N|Solid](https://github.com/Winster332/FarmMachine/blob/master/Resources/scheme.png)
 
+Google Drive - [Draw.IO scheme](https://drive.google.com/file/d/1V9ktUXEDGq-747UuSGEsqQjPWD_fuzGH/view?usp=sharing)
+
 ## Build and start
 
 Before you start building a project, you need to install a [Docker](https://www.docker.com). After installation and configuration. And after the launch of the infrastructure, you can start assembling the project services
