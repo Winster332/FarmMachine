@@ -5,6 +5,7 @@ using FarmMachine.Domain;
 using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Extensions;
 using FarmMachine.Domain.Models;
+using FarmMachine.Domain.Services;
 using FarmMachine.ExchangeBroker.CommandHandlers;
 using FarmMachine.ExchangeBroker.Exchanges;
 using FarmMachine.ExchangeBroker.Services;
@@ -75,12 +76,14 @@ namespace FarmMachine.ExchangeBroker
       
       var mongoClient = new MongoClient(_settings.Db.DbConnectoin);
       var database = mongoClient.GetDatabase(_settings.Db.DbName);
-      
+
+      var telegram = new TelegramIntegrations(_settings.Telegram);
 //      var exchange = new BittrexExchange(_settings);
       
       var builder = new ContainerBuilder();
 
       builder.RegisterInstance(database).As<IMongoDatabase>().SingleInstance();
+      builder.RegisterInstance(telegram).As<ITelegramIntegrations>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
       builder.RegisterType<BittrexExchange>().As<IBittrexExchange>().SingleInstance();
       builder.RegisterType<BuySellCommandHandler>();
@@ -125,6 +128,14 @@ namespace FarmMachine.ExchangeBroker
 //      })).As<IBusControl>().SingleInstance();
 
       _container = builder.Build();
+
+      _container.Resolve<ITelegramIntegrations>().Start(() =>
+      {
+        Log.Information("Write code for telegram: ");
+        var code = Console.ReadLine();
+
+        return code;
+      }).GetAwaiter().GetResult();
 
       var ex = _container.Resolve<IBittrexExchange>();
       ex.Init();

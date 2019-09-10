@@ -24,7 +24,6 @@ namespace FarmMachine.Domain.Services
     {
       _settings = settings;
       _store = new FileSessionStore();
-      _client = new TelegramClient(_settings.ApiKey, _settings.ApiHash, _store, "session");
     }
 
     public async Task Start(Func<string> callbackCodeAuth)
@@ -34,6 +33,9 @@ namespace FarmMachine.Domain.Services
         return;
       }
 
+      _client = new TelegramClient(_settings.ApiKey, _settings.ApiHash, _store, "session");
+      var isUserAuthorized = _client.IsUserAuthorized();
+      
       Log.Information("Begin connect to telegram");
 
       try
