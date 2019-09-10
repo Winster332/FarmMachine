@@ -16,6 +16,13 @@ The project works exclusively on Windows. Since the project uses the chromium en
 |  [POLONIEX](https://poloniex.com/)         |   future   | No   |
 |  [HitBTC](https://hitbtc.com/)         |   future   | No   |
 
+Use the api key and secret to authorize your api exchange
+
+### Services
+
+- [FarmMachine.ExchangeBroker](docs/FarmMachine.ExchangeBroker.md)
+- [FarmMachine.MonitorStrategy](docs/FarmMachine.MonitorStrategy.md)
+
 ### Scheme
 
 orange - development in progress
