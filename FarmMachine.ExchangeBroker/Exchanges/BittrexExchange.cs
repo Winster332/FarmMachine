@@ -9,6 +9,7 @@ using Bittrex.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Logging;
 using CryptoExchange.Net.OrderBook;
+using FarmMachine.Domain;
 using FarmMachine.Domain.Models;
 using FarmMachine.ExchangeBroker.Services;
 

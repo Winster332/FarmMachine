@@ -32,7 +32,23 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="BigMath, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\BigMath.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Ionic.ZLib, Version=2.0.0.14, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\Ionic.ZLib.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Microsoft.CSharp" />
+        <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+          <HintPath>..\packages\Newtonsoft.Json.12.0.3-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
           <HintPath>..\packages\Serilog.2.9.0-dev-01124\lib\net45\Serilog.dll</HintPath>
           <Private>True</Private>
@@ -41,10 +57,19 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
+        <Reference Include="TeleSharp.TL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\TeleSharp.TL.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="TLSharp.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\TLSharp.Core.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Commands\Exchange\BuyCurrency.cs" />
         <Compile Include="Commands\Exchange\SellCurrency.cs" />
+        <Compile Include="ExchangeSettings.cs" />
         <Compile Include="Extensions\AssemblyExtensions.cs" />
         <Compile Include="Models\BacktestOrderPair.cs" />
         <Compile Include="Models\MetaOrder.cs" />
@@ -55,6 +80,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Services\OrderCacheValidator.cs" />
         <Compile Include="Services\ProtocolRepository.cs" />
+        <Compile Include="Services\TelegramIntegrations.cs" />
         <Compile Include="Services\TimeSchedulerService.cs" />
         <Compile Include="Services\TradeCalcService.cs" />
     </ItemGroup>

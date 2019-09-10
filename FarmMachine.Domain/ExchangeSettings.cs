@@ -2,10 +2,11 @@ using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace FarmMachine.ExchangeBroker
+namespace FarmMachine.Domain
 {
   public class ExchangeSettings
   {
+    public TelegramSettings Telegram { get; set; }
     public BittrexSettings Bittrex { get; set; }
     public MongoDbSettings Db { get; set; }
     public RabbitMqSettings RabbitMQ { get; set; }
@@ -41,6 +42,11 @@ namespace FarmMachine.ExchangeBroker
         Host = new Uri(json["rabbitMq"]["host"].ToObject<string>()),
         ConcurrencyLimit = json["rabbitMq"]["concurrencyLimit"].ToObject<int>()
       };
+      Telegram = new TelegramSettings
+      {
+        ApiKey = json["telegram"]["apiKey"].ToObject<int>(),
+        ApiHash = json["telegram"]["apiHash"].ToObject<string>()
+      };
     }
 
     private string LoadFromFile()
@@ -56,6 +62,12 @@ namespace FarmMachine.ExchangeBroker
       }
 
       return fileSource;
+    }
+
+    public class TelegramSettings
+    {
+      public int ApiKey { get; set; }
+      public string ApiHash { get; set; }
     }
 
     public enum RiskManagerBalanceType

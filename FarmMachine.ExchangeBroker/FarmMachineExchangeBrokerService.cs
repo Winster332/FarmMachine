@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Autofac;
+using FarmMachine.Domain;
 using FarmMachine.Domain.Commands.Exchange;
 using FarmMachine.Domain.Extensions;
 using FarmMachine.Domain.Models;
