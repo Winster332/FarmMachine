@@ -63,6 +63,14 @@ namespace FarmMachine.ExchangeBroker
       Log.Information($"RabbitMQ host: {_settings.RabbitMQ.Host}");
       Log.Information($"RabbitMQ concurrency limit: {_settings.RabbitMQ.ConcurrencyLimit}");
       Log.Information($"");
+      
+      Log.Information($"");
+      Log.Information($"Telegram");
+      Log.Information($"Telegram enabled: {_settings.Telegram.Enabled}");
+      Log.Information($"Telegram phone number: {_settings.Telegram.PhoneNumber}");
+      Log.Information($"Telegram api key: {_settings.Telegram.ApiKey}");
+      Log.Information($"Telegram api hash: {_settings.Telegram.ApiHash}");
+      Log.Information($"");
       #endregion
       
       var mongoClient = new MongoClient(_settings.Db.DbConnectoin);

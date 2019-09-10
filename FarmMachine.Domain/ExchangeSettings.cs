@@ -46,7 +46,8 @@ namespace FarmMachine.Domain
       {
         ApiKey = json["telegram"]["apiKey"].ToObject<int>(),
         ApiHash = json["telegram"]["apiHash"].ToObject<string>(),
-        PhoneNumber = json["telegram"]["phoneNumber"].ToObject<string>()
+        PhoneNumber = json["telegram"]["phoneNumber"].ToObject<string>(),
+        Enabled = json["telegram"]["enabled"].ToObject<bool>()
       };
     }
 
@@ -70,6 +71,7 @@ namespace FarmMachine.Domain
       public int ApiKey { get; set; }
       public string ApiHash { get; set; }
       public string PhoneNumber { get; set; }
+      public bool Enabled { get; set; }
     }
 
     public enum RiskManagerBalanceType

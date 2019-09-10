@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Serilog;
 using TeleSharp.TL;
 using TLSharp.Core;
 
@@ -28,27 +29,79 @@ namespace FarmMachine.Domain.Services
 
     public async Task Start(Func<string> callbackCodeAuth)
     {
-      await _client.ConnectAsync();
+      if (!_settings.Enabled)
+      {
+        return;
+      }
 
-      var hash = await _client.SendCodeRequestAsync(_settings.PhoneNumber);
-      var code = callbackCodeAuth();
+      Log.Information("Begin connect to telegram");
 
-      _user = await _client.MakeAuthAsync(_settings.PhoneNumber, hash, code);
+      try
+      {
+        await _client.ConnectAsync();
+
+        var hash = await _client.SendCodeRequestAsync(_settings.PhoneNumber);
+        var code = callbackCodeAuth();
+
+        _user = await _client.MakeAuthAsync(_settings.PhoneNumber, hash, code);
+        
+        Log.Information("Telegram api connected");
+      }
+      catch (Exception ex)
+      {
+        Log.Error(ex.ToString());
+      }
     }
 
     public async Task SendInfo(string text)
     {
-      await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [INFO] {text}");
+      if (!_settings.Enabled)
+      {
+        return;
+      }
+
+      try
+      {
+        await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [INFO] {text}");
+      }
+      catch (Exception ex)
+      {
+        Log.Error(ex.ToString());
+      }
     }
 
     public async Task SendWarn(string text)
     {
-      await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [WARN] {text}");
+      if (!_settings.Enabled)
+      {
+        return;
+      }
+
+      try
+      {
+        await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [WARN] {text}");
+      }
+      catch (Exception ex)
+      {
+        Log.Error(ex.ToString());
+      }
     }
     
     public async Task SendError(Exception ex)
     {
-      await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [ERROR] {ex.ToString()}");
+      if (!_settings.Enabled)
+      {
+        return;
+      }
+
+      try
+      {
+        await _client.SendMessageAsync(new TLInputPeerSelf(), $"{GetFormatDateTime()} [ERROR] {ex.ToString()}");
+      }
+      catch (Exception e)
+      {
+        Log.Error(e.ToString());
+      }
     }
 
     private string GetFormatDateTime()
