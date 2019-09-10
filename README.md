@@ -5,6 +5,8 @@ This is a service consisting of two microservices that allows you to configure o
 
 > The data project is experimental, and is not recommended for reliable use.
 
+Reports on the work of Rabbit can be seen in [this table](https://docs.google.com/spreadsheets/d/1I9c0Wa98iYQpuwfH7Ijr6h4on4wzOlCQhKeiOg3TFtA/edit?usp=sharing). 
+<br>
 The project works exclusively on Windows. Since the project uses the chromium engine, this greatly complicates the transfer of the project to other OS.
 
 ## Supported exchanges
