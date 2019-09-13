@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FarmMachine.Domain.Models;
 using MongoDB.Driver;
 using Serilog;
 
@@ -62,12 +63,5 @@ namespace FarmMachine.Domain.Services
 
       return null;
     }
-  }
-
-  public class ReportResult
-  {
-    public Guid Id { get; set; }
-    public bool Success { get; set; }
-    public string Error { get; set; }
   }
 }

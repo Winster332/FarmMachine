@@ -112,6 +112,7 @@
         <Compile Include="Models\OrderEventBacktest.cs" />
         <Compile Include="Models\OrderEventType.cs" />
         <Compile Include="Models\ProtocolEvent.cs" />
+        <Compile Include="Models\ReportResult.cs" />
         <Compile Include="Models\ValidationResult.cs" />
         <Compile Include="Models\ValidationStatus.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

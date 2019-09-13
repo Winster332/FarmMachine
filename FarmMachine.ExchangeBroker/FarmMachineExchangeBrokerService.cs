@@ -110,23 +110,6 @@ namespace FarmMachine.ExchangeBroker
           cfg.ConfigureEndpoints(context);
         }));
       });
-      
-//      builder.RegisterInstance(Bus.Factory.CreateUsingRabbitMq(x =>
-//      {
-//        var host = x.Host(_settings.RabbitMQ.Host, h => { });
-//
-//        x.UseDelayedExchangeMessageScheduler();
-//
-//        x.ReceiveEndpoint(host, "farm_machine", cfg =>
-//        {
-//            cfg.Consumer(typeof(BuySellCommandHandler), f => new BuySellCommandHandler(database, exchange));
-////            cfg.Consumer(typeof(MailingQueryHandler), f => new MailingQueryHandler(database));
-//
-//          cfg.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
-//        });
-//
-//        x.UseConcurrencyLimit(_settings.RabbitMQ.ConcurrencyLimit);
-//      })).As<IBusControl>().SingleInstance();
 
       _container = builder.Build();
 
