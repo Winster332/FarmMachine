@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FarmMachine.Domain.Models;
 using MongoDB.Driver;
 
 namespace FarmMachine.Domain.Services
@@ -51,14 +52,5 @@ namespace FarmMachine.Domain.Services
 
       return e.Id;
     }
-  }
-
-  public class ProtocolEvent
-  {
-    public Guid Id { get; set; }
-    public DateTime Created { get; set; }
-    public IDictionary<string, object> Fields { get; set; }
-    public string Description { get; set; }
-    public bool IsRemoved { get; set; }
   }
 }

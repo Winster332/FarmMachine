@@ -111,6 +111,7 @@
         <Compile Include="Models\MetaOrder.cs" />
         <Compile Include="Models\OrderEventBacktest.cs" />
         <Compile Include="Models\OrderEventType.cs" />
+        <Compile Include="Models\ProtocolEvent.cs" />
         <Compile Include="Models\ValidationResult.cs" />
         <Compile Include="Models\ValidationStatus.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,6 +119,7 @@
         <Compile Include="Services\ProtocolService.cs" />
         <Compile Include="Services\TelegramIntegrations.cs" />
         <Compile Include="Services\TimeSchedulerService.cs" />
+        <Compile Include="Services\TimeService.cs" />
         <Compile Include="Services\TradeCalcService.cs" />
     </ItemGroup>
     <ItemGroup>
