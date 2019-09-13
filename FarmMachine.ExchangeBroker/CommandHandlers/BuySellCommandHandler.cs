@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FarmMachine.Domain.Commands.Exchange;
-using FarmMachine.Domain.Models;
 using FarmMachine.Domain.Services;
 using FarmMachine.ExchangeBroker.Exchanges;
 using MassTransit;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Serilog;
 
@@ -14,13 +12,15 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
 {
   public class BuySellCommandHandler : IConsumer<BuyCurrency>, IConsumer<SellCurrency>
   {
-    public IMongoCollection<BsonDocument> _protocol;
+//    public IMongoCollection<BsonDocument> _protocol;
     private IBittrexExchange _exchange;
+    private IProtocolService _protocolService;
     
-    public BuySellCommandHandler(IMongoDatabase database, IBittrexExchange exchange)
+    public BuySellCommandHandler(IMongoDatabase database, IBittrexExchange exchange, IProtocolService protocolService)
     {
       _exchange = exchange;
-      _protocol = database.GetCollection<BsonDocument>("protocol");
+//      _protocol = database.GetCollection<BsonDocument>("protocol");
+      _protocolService = protocolService;
     }
     
     public async Task Consume(ConsumeContext<BuyCurrency> context)
@@ -44,7 +44,16 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
 
       try
       {
-        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+//        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+//        {
+//          {"_id", context.Message.Id},
+//          {"amount", amount},
+//          {"bid", context.Message.Bid},
+//          {"rate", rate},
+//          {"timestamp", context.Message.Created},
+//          {"type", "buy"}
+//        }));
+        await _protocolService.WriteAsync(new Dictionary<string, object>
         {
           {"_id", context.Message.Id},
           {"amount", amount},
@@ -52,7 +61,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
           {"rate", rate},
           {"timestamp", context.Message.Created},
           {"type", "buy"}
-        }));
+        }, "BuyCurrency");
       }
       catch (Exception ex)
       {
@@ -84,7 +93,16 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
       
       try
       {
-        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+//        await _protocol.InsertOneAsync(new BsonDocument(new Dictionary<string, object>
+//        {
+//          {"_id", context.Message.Id},
+//          {"amount", context.Message.Amount},
+//          {"ask", context.Message.Ask},
+//          {"rate", rate},
+//          {"timestamp", context.Message.Created},
+//          {"type", "sell"}
+//        }));
+        await _protocolService.WriteAsync(new Dictionary<string, object>
         {
           {"_id", context.Message.Id},
           {"amount", context.Message.Amount},
@@ -92,7 +110,7 @@ namespace FarmMachine.ExchangeBroker.CommandHandlers
           {"rate", rate},
           {"timestamp", context.Message.Created},
           {"type", "sell"}
-        }));
+        }, "SellCurrency");
       }
       catch (Exception ex)
       {

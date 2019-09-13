@@ -86,6 +86,7 @@ namespace FarmMachine.ExchangeBroker
       builder.RegisterInstance(telegram).As<ITelegramIntegrations>().SingleInstance();
       builder.RegisterInstance(_settings).SingleInstance();
       builder.RegisterType<BittrexExchange>().As<IBittrexExchange>().SingleInstance();
+      builder.RegisterType<ProtocolService>().As<IProtocolService>().SingleInstance();
       builder.RegisterType<BuySellCommandHandler>();
       
       builder.AddMassTransit(x =>
