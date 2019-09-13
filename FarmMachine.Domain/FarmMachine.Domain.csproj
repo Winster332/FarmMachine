@@ -36,6 +36,14 @@
           <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\BigMath.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Crc32C.NET, Version=1.0.5.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Crc32C.NET.1.0.5.0\lib\net20\Crc32C.NET.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="DnsClient, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424">
+          <HintPath>..\packages\DnsClient.1.2.0\lib\net45\DnsClient.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
           <Private>True</Private>
@@ -45,6 +53,18 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.CSharp" />
+        <Reference Include="MongoDB.Bson, Version=2.9.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\MongoDB.Bson.2.9.1\lib\net452\MongoDB.Bson.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="MongoDB.Driver, Version=2.9.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\MongoDB.Driver.2.9.1\lib\net452\MongoDB.Driver.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="MongoDB.Driver.Core, Version=2.9.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\MongoDB.Driver.Core.2.9.1\lib\net452\MongoDB.Driver.Core.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
           <HintPath>..\packages\Newtonsoft.Json.12.0.3-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
           <Private>True</Private>
@@ -53,9 +73,25 @@
           <HintPath>..\packages\Serilog.2.9.0-dev-01124\lib\net45\Serilog.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="SharpCompress, Version=0.23.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96">
+          <HintPath>..\packages\SharpCompress.0.23.0\lib\net45\SharpCompress.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Snappy.NET, Version=1.1.1.8, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Snappy.NET.1.1.1.8\lib\net45\Snappy.NET.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System" />
+        <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+          <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Xml" />
         <Reference Include="TeleSharp.TL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\TLSharp.0.1.0.396\lib\net45\TeleSharp.TL.dll</HintPath>
@@ -79,7 +115,7 @@
         <Compile Include="Models\ValidationStatus.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Services\OrderCacheValidator.cs" />
-        <Compile Include="Services\ProtocolRepository.cs" />
+        <Compile Include="Services\ProtocolService.cs" />
         <Compile Include="Services\TelegramIntegrations.cs" />
         <Compile Include="Services\TimeSchedulerService.cs" />
         <Compile Include="Services\TradeCalcService.cs" />
