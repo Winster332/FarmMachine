@@ -105,6 +105,7 @@
     <ItemGroup>
         <Compile Include="Commands\Exchange\BuyCurrency.cs" />
         <Compile Include="Commands\Exchange\SellCurrency.cs" />
+        <Compile Include="Commands\ReportGenerator\GenerateReport.cs" />
         <Compile Include="ExchangeSettings.cs" />
         <Compile Include="Extensions\AssemblyExtensions.cs" />
         <Compile Include="Models\BacktestOrderPair.cs" />
