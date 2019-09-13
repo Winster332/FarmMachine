@@ -10,6 +10,7 @@ namespace FarmMachine.Domain.Services
   {
     Guid Write(IDictionary<string, object> fields, string description = null);
     Task<Guid> WriteAsync(IDictionary<string, object> fields, string description = null);
+    List<ProtocolEvent> Get(DateTime from, DateTime to);
   }
 
   public class ProtocolService : IProtocolService
@@ -19,6 +20,13 @@ namespace FarmMachine.Domain.Services
     public ProtocolService(IMongoDatabase db)
     {
       _protocols = db.GetCollection<ProtocolEvent>("protocol-events");
+    }
+
+    public List<ProtocolEvent> Get(DateTime from, DateTime to)
+    {
+      var events = _protocols.Find(x => x.Created >= from && x.Created <= to).ToList();
+      
+      return events;
     }
     
     public Guid Write(IDictionary<string, object> fields, string description = null)
