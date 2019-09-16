@@ -28,7 +28,7 @@ namespace FarmMachine.MonitorStrategy
     
     private static void InitLog()
     {
-      var pathToLog = "..\\Logs";
+      var pathToLog = "..\\..\\..\\..\\Logs";
       if (!Directory.Exists(pathToLog))
       {
         Directory.CreateDirectory(pathToLog);

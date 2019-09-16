@@ -20,15 +20,16 @@ namespace FarmMachine.Domain.Services
     {
       Log.Information("Push validation orders");
       
+      var listNew = new List<OrderEventBacktest>();
+      var timeNow = DateTime.Now;
+      
       var result = new ValidationResult();
-      var orders = pairs.Select(x => x.Right).Where(x => x != null).OrderBy(x => x.DateTime).Select(x => new OrderEventBacktest
+      var orders = pairs.Select(x => x.Right).Where(x => x != null && x.DateTime.Month == timeNow.Month).OrderBy(x => x.DateTime).Select(x => new OrderEventBacktest
       {
         EventType = x.EventType,
         Price = x.Price,
         DateTime = x.DateTime
       }).ToList();
-      var listNew = new List<OrderEventBacktest>();
-      var timeNow = DateTime.Now;
 
       foreach (var order in orders)
       {
@@ -58,6 +59,7 @@ namespace FarmMachine.Domain.Services
 
         if (resultTime.TotalMinutes <= 15)
         {
+          Log.Information($"Order need push");
           DetectOrder?.Invoke(this, targetOrder);
           
           result.Status = ValidationStatus.Pushed;
