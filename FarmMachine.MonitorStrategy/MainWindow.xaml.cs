@@ -77,7 +77,6 @@ namespace FarmMachine.MonitorStrategy
       {
         Log.Information($"Buy order: {order}");
           
-        
         _mtBus.GetBus().Publish<BuyCurrency>(new
         {
           Id = Guid.NewGuid(),

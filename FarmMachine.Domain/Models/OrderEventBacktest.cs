@@ -1,4 +1,5 @@
 using System;
+using Serilog;
 
 namespace FarmMachine.Domain.Models
 {
@@ -22,6 +23,8 @@ namespace FarmMachine.Domain.Models
     public static OrderEventBacktest Parse(string eventType, string dateTime, string price)
     {
       var orderEvent = new OrderEventBacktest();
+      
+      Log.Information($"Begin parse order: EventType: {eventType}, DateTime: {dateTime}, Price: {price}");
 
       eventType = eventType.ToUpper();
       
@@ -29,7 +32,7 @@ namespace FarmMachine.Domain.Models
       {
         orderEvent.EventType = OrderEventType.Sell;
       }
-      else if (eventType.ToLower() == "BUY" || eventType == "LONG")
+      else if (eventType == "BUY" || eventType == "LONG")
       {
         orderEvent.EventType = OrderEventType.Buy;
       }

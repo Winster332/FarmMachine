@@ -49,13 +49,14 @@ namespace FarmMachine.Domain.Services
 
       if (listNew.Count != 0)
       {
-        Log.Information("Detected new order from backtest");
-        
         var targetOrder = listNew.LastOrDefault();
         
         result.Order = targetOrder;
+        var resultTime = timeNow - targetOrder.DateTime;
+        
+        Log.Information($"Detected new order from backtest. Time spread: {resultTime}");
 
-        if (targetOrder.DateTime.Hour == timeNow.Hour && targetOrder.DateTime.Day == timeNow.Day)
+        if (resultTime.TotalMinutes <= 15)
         {
           DetectOrder?.Invoke(this, targetOrder);
           
