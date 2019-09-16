@@ -117,6 +117,13 @@ The configuration file is located in **FarmMachine/FarmMachine.ExchangeBroker/ap
 }
 ```
 
+### Logs
+All logs are stored in the upper directory Log, and are divided by type of service, and by day. 
+<br>
+They look like this:
+
+![N|Solid](https://github.com/Winster332/FarmMachine/blob/master/Resources/log-example.png)
+
 ## Integration through RabbitMQ
 
 If you want to use only part of this project. You can easily integrate through the RabbitMQ bus. To do this, you need to connect to the queue
