@@ -24,8 +24,8 @@ Use the api key and secret to authorize your api exchange
 
 ### Services
 
-- [FarmMachine.ExchangeBroker](docs/FarmMachine.ExchangeBroker.md)
-- [FarmMachine.MonitorStrategy](docs/FarmMachine.MonitorStrategy.md)
+- [FarmMachine.ExchangeBroker](FarmMachine.ExchangeBroker/README.md)
+- [FarmMachine.MonitorStrategy](FarmMachine.MonitorStrategy/FREADME.md)
 
 ### Scheme
 
