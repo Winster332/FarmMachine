@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Serilog;
 using Topshelf;
 
@@ -8,10 +9,7 @@ namespace FarmMachine.ExchangeBroker
   {
     static void Main(string[] args)
     {
-      Log.Logger = new LoggerConfiguration()
-        .WriteTo.Console()
-        .WriteTo.File("FarmMachine.ExchangeBroker.log")
-        .CreateLogger();
+      InitLog();
 
       HostFactory.Run(cfg =>
       {
@@ -23,6 +21,22 @@ namespace FarmMachine.ExchangeBroker
         cfg.RunAsLocalSystem();
         cfg.OnException(ex => Log.Error(ex.ToString()));
       });
+    }
+
+    private static void InitLog()
+    {
+      var pathToLog = "..\\Logs";
+      if (!Directory.Exists(pathToLog))
+      {
+        Directory.CreateDirectory(pathToLog);
+      }
+      
+      Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+        .WriteTo.File($"{pathToLog}\\FarmMachine.ExchangeBroker-.log", 
+          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", 
+          rollingInterval: RollingInterval.Day)
+        .CreateLogger();
     }
   }
 }

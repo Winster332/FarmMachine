@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -25,12 +26,25 @@ namespace FarmMachine.MonitorStrategy
     private TimeSchedulerService _timeScheduler;
     private MTBus _mtBus;
     
+    private static void InitLog()
+    {
+      var pathToLog = "..\\Logs";
+      if (!Directory.Exists(pathToLog))
+      {
+        Directory.CreateDirectory(pathToLog);
+      }
+      
+      Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+        .WriteTo.File($"{pathToLog}\\FarmMachine.MonitorStrategy-.log", 
+          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", 
+          rollingInterval: RollingInterval.Day)
+        .CreateLogger();
+    }
+    
     public MainWindow()
     {
-      Log.Logger = new LoggerConfiguration()
-        .WriteTo.File("FarmMachine.MonitorStrategy.log")
-        .WriteTo.Console()
-        .CreateLogger();
+      InitLog();
       
       Log.Information("Service starting...");
       
