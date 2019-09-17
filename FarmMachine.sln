@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.MonitorStrategy", "FarmMachine.MonitorStrategy\FarmMachine.MonitorStrategy.csproj", "{46B6F1B8-326B-4632-956A-2BF1752AF3A9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Domain", "FarmMachine.Domain\FarmMachine.Domain.csproj", "{6FC1651C-76E2-4094-B9AE-07A789D697D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.ExchangeBroker", "FarmMachine.ExchangeBroker\FarmMachine.ExchangeBroker.csproj", "{C9BF1755-7848-417B-9B86-C77748A07E4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Tests", "FarmMachine.Tests\FarmMachine.Tests.csproj", "{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmMachine.Analyzer", "FarmMachine.Analyzer\FarmMachine.Analyzer.csproj", "{B2C31736-C7E0-48B7-852E-34AF263F404D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Debug|x64.ActiveCfg = Debug|x64
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Debug|x64.Build.0 = Debug|x64
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Debug|x86.ActiveCfg = Debug|x86
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Debug|x86.Build.0 = Debug|x86
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Release|x64.ActiveCfg = Release|Any CPU
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Release|x64.Build.0 = Release|Any CPU
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Release|x86.ActiveCfg = Release|Any CPU
-		{46B6F1B8-326B-4632-956A-2BF1752AF3A9}.Release|x86.Build.0 = Release|Any CPU
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Debug|x64.Build.0 = Debug|Any CPU
 		{6FC1651C-76E2-4094-B9AE-07A789D697D4}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -51,6 +43,14 @@ Global
 		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x64.Build.0 = Release|Any CPU
 		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{CD7CAFB0-A49C-4015-A3C1-0931C09EA1B7}.Release|x86.Build.0 = Release|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Debug|x86.Build.0 = Debug|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Release|x64.Build.0 = Release|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Release|x86.ActiveCfg = Release|Any CPU
+		{B2C31736-C7E0-48B7-852E-34AF263F404D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

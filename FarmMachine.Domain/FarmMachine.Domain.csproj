@@ -108,16 +108,11 @@
         <Compile Include="Commands\ReportGenerator\GenerateReport.cs" />
         <Compile Include="ExchangeSettings.cs" />
         <Compile Include="Extensions\AssemblyExtensions.cs" />
-        <Compile Include="Models\BacktestOrderPair.cs" />
         <Compile Include="Models\MetaOrder.cs" />
-        <Compile Include="Models\OrderEventBacktest.cs" />
         <Compile Include="Models\OrderEventType.cs" />
         <Compile Include="Models\ProtocolEvent.cs" />
         <Compile Include="Models\ReportResult.cs" />
-        <Compile Include="Models\ValidationResult.cs" />
-        <Compile Include="Models\ValidationStatus.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Services\OrderCacheValidator.cs" />
         <Compile Include="Services\ProtocolService.cs" />
         <Compile Include="Services\ReportGeneratorService.cs" />
         <Compile Include="Services\TelegramIntegrations.cs" />

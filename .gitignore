@@ -6,3 +6,5 @@
 /FarmMachine.Domain/bin
 /FarmMachine.ExchangeBroker.Simulator/bin
 /FarmMachine.ExchangeBroker.Simulator/obj
+/FarmMachine.Analyzer/bin
+/FarmMachine.Analyzer/obj

@@ -95,7 +95,6 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Tests\BuyAndSellCurrencyTest.cs" />
         <Compile Include="Tests\CurrencyConverterTest.cs" />
-        <Compile Include="Tests\OrderCacheValidatorTest.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\FarmMachine.Domain\FarmMachine.Domain.csproj">
