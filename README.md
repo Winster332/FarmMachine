@@ -1,5 +1,6 @@
 # ![Icon](https://github.com/Winster332/FarmMachine/blob/master/Resources/icon.png?raw=true) FarmMachine 
 
+> I tried to write a system of autonomous earnings using TradeView and PineScript. It was an experimental project. Unfortunately, this project was not successful due to the principle of the TradeView platform using their backtesting strategies. At the moment, I suspend work on this project.
 
 This is a service consisting of two microservices that allows you to configure offline trading. For this, services are integrated with external exchanges, and TradeView. TradeView is necessary for conducting backtests and receiving signals. Since there is currently no suitable tool for executing PineScript in the local system, I had to put TradeView into the Chromium engine, and already through it execute js scripts on the TradeView side. The FarmMachine.MonitorStrategy microservice is responsible for this. Microservices are connected by the RabbitMQ bus, and the MongoDB database is used for storage. When a new signal arrives, FarmMachine.MonitorStrategy sends the RabbitMQ bus signal. This signal is caught by the FarmMachine.ExchangeBroker service. He is responsible for integration with exchanges. When a buy / sell signal arrives, some calculations occur, after which a conclusion is made - what to buy, at what price and in what volume.
 
@@ -160,7 +161,7 @@ public interface SellCurrency
 <br>
 [Bittrex.Net](https://github.com/JKorf/Bittrex.Net) - for integration with BITTREX API
 <br>
-[Binance.Net](https://github.com/JKorf/Binance.Net) = for integration with Binance API
+[Binance.Net](https://github.com/JKorf/Binance.Net) - for integration with Binance API
 <br>
 [Topshelf](https://github.com/Topshelf/Topshelf) - run app as service
 <br>
